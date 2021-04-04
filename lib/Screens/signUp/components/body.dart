@@ -51,6 +51,7 @@ class Body extends StatelessWidget {
               AlreadyHaveAnAccountCheck(
                 login: false,
                 press: () {
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

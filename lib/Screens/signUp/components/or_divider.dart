@@ -10,7 +10,7 @@ class OrDivider extends StatelessWidget {
       width: size.width * 0.8,
       child: Row(
         children: [
-          buildDivider(),
+          BuildDivider(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
@@ -21,15 +21,15 @@ class OrDivider extends StatelessWidget {
               ),
             ),
           ),
-          buildDivider(),
+          BuildDivider(),
         ],
       ),
     );
   }
 }
 
-class buildDivider extends StatelessWidget {
-  const buildDivider({
+class BuildDivider extends StatelessWidget {
+  const BuildDivider({
     Key key,
   }) : super(key: key);
 

@@ -5,7 +5,6 @@ import 'package:k_on_net/Screens/signUp/signup_screen.dart';
 import 'package:k_on_net/components/already_have_an_account_check.dart';
 import 'package:k_on_net/components/rounded_button.dart';
 import 'package:k_on_net/components/rounded_input_field.dart';
-import 'package:k_on_net/constants.dart';
 
 class Body extends StatelessWidget {
   const Body({
@@ -48,6 +47,7 @@ class Body extends StatelessWidget {
             SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(
               press: () {
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
