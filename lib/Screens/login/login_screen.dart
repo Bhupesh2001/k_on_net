@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:k_on_net/Screens/login/components/body.dart';
+import 'package:k_on_net/Screens/login/components/loginBody.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
