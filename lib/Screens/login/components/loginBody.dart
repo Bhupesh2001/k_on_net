@@ -26,16 +26,19 @@ class _BodyState extends State<Body> {
         isLoading = true;
       });
     }
-    authMethods
-        .signInWithEmail(tecEmail.text, tecPassword.text)
-        .then((value) => null);
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => ChatRoom(),
-      ),
-      (route) => false,
-    );
+    authMethods.signInWithEmail(tecEmail.text, tecPassword.text);
+    print("Status = " + authMethods.signInSuccessful().toString());
+    if (authMethods.signInSuccessful()) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => ChatRoom(),
+        ),
+        (route) => false,
+      );
+    } else {
+      print("Login Failed\n");
+    }
   }
 
   @override

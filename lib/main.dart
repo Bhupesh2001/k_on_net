@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:k_on_net/Screens/Welcome/welcome_screen.dart';
 import 'package:k_on_net/Screens/chatRoom/chatRoom.dart';
-import 'package:k_on_net/Screens/signUp/signup_screen.dart';
 import 'package:k_on_net/constants.dart';
 
 void main() {
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: WelcomeScreen(),
+      home: ChatRoom(),
     );
   }
 }

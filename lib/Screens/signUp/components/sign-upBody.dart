@@ -32,20 +32,28 @@ class _BodyState extends State<Body> {
       });
     }
     authMethods.signUpWithEmail(tecEmail.text, tecPassword.text).then((val) {});
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => ChatRoom(),
-      ),
-      (route) => false,
-    );
+    //todo check that provided email already exists or not, and check for other errors
+    if (authMethods.signInSuccessful()) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => ChatRoom(),
+        ),
+        (route) => false,
+      );
+    } else {
+      print("Sign up Failed\n");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return isLoading
-        ? Container(child: CircularProgressIndicator())
+        ? Container(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(),
+          )
         : SingleChildScrollView(
             child: SafeArea(
               child: Background(
