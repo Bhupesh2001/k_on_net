@@ -3,6 +3,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:k_on_net/constants.dart';
 
 class ChatRoom extends StatefulWidget {
+  static String id = 'chat_screen';
   @override
   _ChatRoomState createState() => _ChatRoomState();
 }

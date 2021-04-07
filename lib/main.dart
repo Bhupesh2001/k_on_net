@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:k_on_net/Screens/Welcome/welcome_screen.dart';
 import 'package:k_on_net/Screens/chatRoom/chatRoom.dart';
+import 'package:k_on_net/Screens/login/login_screen.dart';
+import 'package:k_on_net/Screens/signUp/register_screen.dart';
 import 'package:k_on_net/constants.dart';
 
 void main() {
@@ -17,7 +19,13 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: ChatRoom(),
+      home: WelcomeScreen(),
+      routes: {
+        WelcomeScreen.id: (context) => WelcomeScreen(),
+        ChatRoom.id: (context) => ChatRoom(),
+        RegisterScreen.id: (context) => RegisterScreen(),
+        LoginScreen.id: (context) => LoginScreen(),
+      },
     );
   }
 }
