@@ -86,8 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: size.height * 0.03),
                     AlreadyHaveAnAccountCheck(
                       press: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, RegisterScreen.id, (route) => false);
+                        Navigator.popAndPushNamed(context, RegisterScreen.id);
                       },
                     )
                   ],

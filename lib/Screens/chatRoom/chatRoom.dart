@@ -1,48 +1,47 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:k_on_net/Screens/Welcome/welcome_screen.dart';
+import 'package:k_on_net/components/rounded_button.dart';
 import 'package:k_on_net/constants.dart';
+import 'package:k_on_net/services/auth.dart';
 
 class ChatRoom extends StatefulWidget {
   static String id = 'chat_screen';
+  final FirebaseUser user;
+  ChatRoom(this.user);
   @override
   _ChatRoomState createState() => _ChatRoomState();
 }
 
 class _ChatRoomState extends State<ChatRoom> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Likes',
-      style: optionStyle,
-    ),
-    Text(
-      'Profile',
-      style: optionStyle,
-    ),
-    Text(
-      'Extra',
-      style: optionStyle,
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: Padding(
+            padding: EdgeInsets.only(left: 20),
+            child: Image.network(widget.user.photoUrl)),
         elevation: 20,
-        title: const Text(
-          'K-On-Net',
-        ),
+        title: Text(widget.user.displayName),
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: Column(
+        children: [
+          RoundedButton(
+            text: 'Sign Out',
+            press: () {
+              signOutGoogle();
+              Navigator.pushNamedAndRemoveUntil(
+                  context, WelcomeScreen.id, (route) => false);
+            },
+          ),
+          Center(
+            child: widgetOptions.elementAt(_selectedIndex),
+          ),
+        ],
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(color: Colors.white, boxShadow: [
