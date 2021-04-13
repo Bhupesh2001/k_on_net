@@ -4,6 +4,7 @@ import 'package:k_on_net/Screens/Welcome/welcome_screen.dart';
 import 'package:k_on_net/Screens/chatRoom/chatRoom.dart';
 import 'package:k_on_net/Screens/login/login_screen.dart';
 import 'package:k_on_net/Screens/signUp/register_screen.dart';
+import 'package:k_on_net/Screens/signUp/userDetailScreen.dart';
 import 'package:k_on_net/constants.dart';
 
 Future main() {
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         ChatRoom.id: (context) => ChatRoom(user),
         RegisterScreen.id: (context) => RegisterScreen(),
         LoginScreen.id: (context) => LoginScreen(),
+        UserDetailsScreen.id: (context) => UserDetailsScreen(),
       },
     );
   }

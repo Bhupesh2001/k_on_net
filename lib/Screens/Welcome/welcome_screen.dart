@@ -91,9 +91,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               //   },
               // ),
               RoundedButton(
-                text: 'SIGN UP',
-                color: kPrimaryLightColor,
-                textColor: Colors.black,
+                text: 'NEXT',
+                color: kPrimaryColor,
+                textColor: Colors.white,
                 press: () {
                   Navigator.pushNamed(context, RegisterScreen.id);
                 },

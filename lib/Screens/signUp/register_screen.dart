@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:k_on_net/Screens/login/login_screen.dart';
-import 'package:k_on_net/components/already_have_an_account_check.dart';
-import 'package:k_on_net/components/googleSignInBtn.dart';
-import 'package:k_on_net/components/or_divider.dart';
+import 'package:k_on_net/Screens/signUp/userDetailScreen.dart';
 import 'package:k_on_net/components/rounded_button.dart';
 import 'package:k_on_net/components/rounded_input_field.dart';
+import 'package:k_on_net/constants.dart';
 import 'background.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -47,6 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           children: [
                             RoundedInputField(
                               hintText: 'Phone',
+                              textInputType: TextInputType.phone,
                               onChanged: (value) {},
                               controller: tecPhone,
                               validator: (String val) {
@@ -55,10 +54,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     : null;
                               },
                             ),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              width: size.width * 0.4,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(29),
+                                child: FlatButton(
+                                  color: kPrimaryColor,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 20, horizontal: 20),
+                                  onPressed: () {},
+                                  child: Text(
+                                    'Send OTP',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                             RoundedInputField(
                               onChanged: (value) {},
                               obscureText: true, // typing becomes hidden
                               hintText: 'OTP',
+                              textInputType: TextInputType.number,
                               controller: tecOtp,
                               icon: Icons.lock,
                               validator: (String val) {
@@ -66,14 +85,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ? 'Enter a valid OTP'
                                     : null;
                               },
-                              suffixIcon: Icons.visibility_off,
                             ),
                           ],
                         ),
                       ),
-                      RoundedButton(
-                        text: 'SIGN UP',
-                        press: () {},
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        width: size.width * 0.4,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(29),
+                          child: FlatButton(
+                            color: kPrimaryColor,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 20),
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, UserDetailsScreen.id);
+                            },
+                            child: Text(
+                              'Verify OTP',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                       SizedBox(height: size.height * 0.03),
                       // AlreadyHaveAnAccountCheck(

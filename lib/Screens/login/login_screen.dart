@@ -14,6 +14,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  static String id = 'login_screen';
   final formKey = GlobalKey<FormState>();
 
   TextEditingController tecEmail = new TextEditingController();

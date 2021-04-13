@@ -9,9 +9,11 @@ class RoundedInputField extends StatelessWidget {
   final bool obscureText;
   final Function validator;
   final TextEditingController controller;
+  final TextInputType textInputType;
   final ValueChanged<String> onChanged;
   const RoundedInputField({
     Key key,
+    this.textInputType,
     this.hintText,
     this.icon = Icons.person,
     this.onChanged,
@@ -27,6 +29,7 @@ class RoundedInputField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         validator: validator,
+        keyboardType: textInputType,
         onChanged: onChanged,
         obscureText: obscureText,
         decoration: InputDecoration(
