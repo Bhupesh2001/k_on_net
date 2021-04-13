@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:k_on_net/Screens/signUp/userDetailScreen.dart';
 import 'package:k_on_net/components/rounded_button.dart';
 import 'package:k_on_net/components/rounded_input_field.dart';
 import 'package:k_on_net/constants.dart';
 import 'background.dart';
+import 'userDetailScreen.dart';
 
 class RegisterScreen extends StatefulWidget {
   static String id = 'register_screen';
@@ -54,25 +54,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     : null;
                               },
                             ),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
-                              width: size.width * 0.4,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(29),
-                                child: FlatButton(
-                                  color: kPrimaryColor,
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 20, horizontal: 20),
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Send OTP',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            RoundedButton(
+                              text: 'Send OTP',
+                              color: kPrimaryColor,
+                              textColor: Colors.white,
+                              press: () {
+                                //  TODO: pass tecPhone in function to request otp
+                              },
                             ),
+                            SizedBox(height: size.height * 0.03),
                             RoundedInputField(
                               onChanged: (value) {},
                               obscureText: true, // typing becomes hidden
@@ -89,37 +79,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ],
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        width: size.width * 0.4,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(29),
-                          child: FlatButton(
-                            color: kPrimaryColor,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 20),
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, UserDetailsScreen.id);
-                            },
-                            child: Text(
-                              'Verify OTP',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
+                      RoundedButton(
+                        text: 'Verify',
+                        color: kPrimaryColor,
+                        textColor: Colors.white,
+                        press: () {
+                          // TODO: pass tecOtp in otp verify function, and put a condition if success then next page
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, UserDetailsScreen.id, (route) => false);
+                        },
                       ),
                       SizedBox(height: size.height * 0.03),
-                      // AlreadyHaveAnAccountCheck(
-                      //   login: false,
-                      //   press: () {
-                      //     Navigator.popAndPushNamed(context, LoginScreen.id);
-                      //   },
-                      // ),
-                      // OrDivider(),
-                      // googleSigninBtn(),
                     ],
                   ),
                 ),
