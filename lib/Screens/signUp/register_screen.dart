@@ -76,14 +76,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         press: () {},
                       ),
                       SizedBox(height: size.height * 0.03),
-                      AlreadyHaveAnAccountCheck(
-                        login: false,
-                        press: () {
-                          Navigator.popAndPushNamed(context, LoginScreen.id);
-                        },
-                      ),
-                      OrDivider(),
-                      googleSigninBtn(),
+                      // AlreadyHaveAnAccountCheck(
+                      //   login: false,
+                      //   press: () {
+                      //     Navigator.popAndPushNamed(context, LoginScreen.id);
+                      //   },
+                      // ),
+                      // OrDivider(),
+                      // googleSigninBtn(),
                     ],
                   ),
                 ),
