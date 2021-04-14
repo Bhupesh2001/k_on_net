@@ -1,18 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:k_on_net/Screens/Welcome/welcome_screen.dart';
 import 'package:k_on_net/Screens/chatRoom/chatRoom.dart';
-import 'package:k_on_net/Screens/login/login_screen.dart';
 import 'package:k_on_net/Screens/signUp/register_screen.dart';
 import 'package:k_on_net/Screens/signUp/userDetailScreen.dart';
 import 'package:k_on_net/constants.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-Future main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  FirebaseUser user;
+  // FirebaseUser user;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,9 +26,8 @@ class MyApp extends StatelessWidget {
       home: WelcomeScreen(),
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
-        ChatRoom.id: (context) => ChatRoom(user),
+        ChatRoom.id: (context) => ChatRoom(),
         RegisterScreen.id: (context) => RegisterScreen(),
-        LoginScreen.id: (context) => LoginScreen(),
         UserDetailsScreen.id: (context) => UserDetailsScreen(),
       },
     );

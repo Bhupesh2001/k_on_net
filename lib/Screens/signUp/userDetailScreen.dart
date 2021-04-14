@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:k_on_net/Screens/chatRoom/chatRoom.dart';
 import 'package:k_on_net/Screens/login/background.dart';
 import 'package:k_on_net/components/rounded_button.dart';
@@ -15,7 +16,7 @@ class UserDetailsScreen extends StatefulWidget {
 class _UserDetailsScreenState extends State<UserDetailsScreen> {
   final formKey = GlobalKey<FormState>();
   TextEditingController tecName = new TextEditingController();
-  TextEditingController tecPassword = new TextEditingController();
+  TextEditingController tecTeam = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -66,17 +67,12 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                             icon: Icons.person,
                             onChanged: (value) {},
                             controller: tecName,
-                            validator: (String val) {
-                              return val.length < 3
-                                  ? 'Enter a valid name'
-                                  : null;
-                            },
                           ),
                           RoundedInputField(
                             onChanged: (value) {},
                             obscureText: true, // typing becomes hidden
                             hintText: 'Team (optional)',
-                            controller: tecPassword,
+                            controller: tecTeam,
                             icon: Icons.lock,
                           ),
                         ],
@@ -86,9 +82,22 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                   RoundedButton(
                     text: 'Finish',
                     press: () {
+                      if (tecName.text.length < 2) {
+                        Fluttertoast.showToast(
+                            msg: "Wrong OTP",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      }
+                      else{
                       //TODO: get the name stored in tecName(name.length should be greater than 3, already implemented )
-                      // Navigator.pushNamedAndRemoveUntil(
-                      //     context, ChatRoom.id, (route) => false);
+
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, ChatRoom.id, (route) => false);
+                      }
                     },
                   ),
                   SizedBox(height: size.height * 0.05),
