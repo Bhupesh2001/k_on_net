@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:k_on_net/Screens/chatRoom/chatRoom.dart';
 import 'package:k_on_net/components/rounded_button.dart';
 import 'package:k_on_net/components/rounded_input_field.dart';
 import 'package:k_on_net/constants.dart';
@@ -55,7 +56,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           await FirebaseAuth.instance
               .signInWithCredential(credential)
               .then((value) async {
-            if (value.user != null) {}
+            if (value.user != null) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, ChatRoom.id, (route) => false);
+            }
           });
         },
         verificationFailed: (FirebaseAuthException e) {

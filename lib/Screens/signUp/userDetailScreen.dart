@@ -6,6 +6,8 @@ import 'package:k_on_net/Screens/login/background.dart';
 import 'package:k_on_net/components/rounded_button.dart';
 import 'package:k_on_net/components/rounded_input_field.dart';
 import 'package:k_on_net/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UserDetailsScreen extends StatefulWidget {
   static String id = 'userDetailsScreen';
@@ -14,6 +16,14 @@ class UserDetailsScreen extends StatefulWidget {
 }
 
 class _UserDetailsScreenState extends State<UserDetailsScreen> {
+  Future<void> userSetup(String displayName, String teamName) async {
+    CollectionReference users = FirebaseFirestore.instance.collection('Users');
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String uid = auth.currentUser.uid.toString();
+    users.add({'userName:': displayName, 'uid': uid, 'teamName': teamName});
+    return;
+  }
+
   final formKey = GlobalKey<FormState>();
   TextEditingController tecName = new TextEditingController();
   TextEditingController tecTeam = new TextEditingController();
@@ -91,12 +101,24 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                             backgroundColor: Colors.red,
                             textColor: Colors.white,
                             fontSize: 16.0);
-                      }
-                      else{
-                      //TODO: get the name stored in tecName(name.length should be greater than 3, already implemented )
-
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, ChatRoom.id, (route) => false);
+                      } else {
+                        //TODO: get the name stored in tecName(name.length should be greater than 3, already implemented )
+                        try {
+                          User updateUser = FirebaseAuth.instance.currentUser;
+                          updateUser.updateProfile(displayName: tecName.text);
+                          userSetup(tecName.text, tecTeam.text);
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, ChatRoom.id, (route) => false);
+                        } catch (e) {
+                          Fluttertoast.showToast(
+                              msg: "Something went wrong",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.grey,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
                       }
                     },
                   ),
