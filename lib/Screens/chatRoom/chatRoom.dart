@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:k_on_net/Screens/Welcome/welcome_screen.dart';
@@ -44,14 +43,14 @@ class _ChatRoomState extends State<ChatRoom> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
             child: GNav(
-              rippleColor: kPrimaryLightColor,
+              rippleColor: kSecondaryColor,
               hoverColor: kPrimaryColor,
               gap: 8,
               activeColor: kPrimaryColor,
               iconSize: 24,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               duration: Duration(milliseconds: 400),
-              tabBackgroundColor: kPrimaryLightColor,
+              tabBackgroundColor: kSecondaryColor,
               tabs: [
                 GButton(
                   icon: Icons.connect_without_contact,

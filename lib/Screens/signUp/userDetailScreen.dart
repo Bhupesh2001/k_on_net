@@ -31,33 +31,31 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Opacity(
-              opacity: 0.2,
-              child: SvgPicture.asset(
-                "assets/icons/login.svg",
-                height: size.height,
-                width: size.width,
-              ),
+      body: Stack(
+        children: [
+          Opacity(
+            opacity: 0.2,
+            child: SvgPicture.asset(
+              "assets/icons/login.svg",
+              height: size.height,
+              width: size.width,
             ),
-            Background(
+          ),
+          Background(
+            child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "Update  Your  Profile",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: kPrimaryColor,
-                        letterSpacing: 3),
+                        fontWeight: FontWeight.bold, letterSpacing: 3),
                   ),
-                  SizedBox(height: size.height * 0.03),
+                  SizedBox(height: size.height * 0.06),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(50),
                     child: Container(
-                      color: kPrimaryLightColor,
+                      color: kSecondaryColor,
                       child: Image.asset(
                         'assets/images/person.png',
                         width: size.width * 0.17,
@@ -126,8 +124,8 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

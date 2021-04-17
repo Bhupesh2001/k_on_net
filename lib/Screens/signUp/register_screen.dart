@@ -17,7 +17,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   TextEditingController tecPhone = new TextEditingController();
   TextEditingController tecOtp = new TextEditingController();
   bool isLoading = false;
@@ -88,9 +88,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: CircularProgressIndicator(),
           )
         : Scaffold(
-            body: SingleChildScrollView(
-              child: SafeArea(
-                child: Background(
+            body: SafeArea(
+              child: Background(
+                child: SingleChildScrollView(
                   child: Column(
                     children: [
                       SizedBox(height: size.height * 0.03),
