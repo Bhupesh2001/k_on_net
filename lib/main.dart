@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:k_on_net/Screens/Welcome/welcome_screen.dart';
-import 'package:k_on_net/Screens/chatRoom/chatRoom.dart';
+import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
+import 'package:k_on_net/Screens/messaging/messageScreen.dart';
 import 'package:k_on_net/Screens/signUp/register_screen.dart';
 import 'package:k_on_net/Screens/signUp/userDetailScreen.dart';
 import 'package:k_on_net/constants.dart';
@@ -22,19 +23,21 @@ class MyApp extends StatelessWidget {
       title: 'K-On-Net Auth',
       theme: ThemeData(
         primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: Colors.white,
+        // scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.white.withOpacity(0.98),
       ),
       darkTheme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: kContentColorLightTheme,
           hintColor: kContentColorLightTheme.withOpacity(0.3),
           textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
               .apply(bodyColor: kContentColorDarkTheme)),
-      home: UserDetailsScreen(),
+      home: ChatRoomMain(),
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
-        ChatRoom.id: (context) => ChatRoom(),
+        ChatRoomMain.id: (context) => ChatRoomMain(),
         RegisterScreen.id: (context) => RegisterScreen(),
         UserDetailsScreen.id: (context) => UserDetailsScreen(),
+        MessageScreen.id: (context) => MessageScreen(),
       },
     );
   }

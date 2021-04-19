@@ -5,6 +5,7 @@ import 'package:k_on_net/constants.dart';
 class RoundedInputField extends StatelessWidget {
   final String hintText;
   final IconData icon;
+  final int maxLength;
   final IconData suffixIcon;
   final bool obscureText;
   final Function validator;
@@ -21,12 +22,18 @@ class RoundedInputField extends StatelessWidget {
     this.obscureText = false,
     this.controller,
     this.validator,
+    this.maxLength,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextFormField(
+        style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
+        maxLength: maxLength,
+        buildCounter: (BuildContext context,
+                {int currentLength, int maxLength, bool isFocused}) =>
+            null,
         cursorColor: kPrimaryColor,
         controller: controller,
         validator: validator,
@@ -34,6 +41,8 @@ class RoundedInputField extends StatelessWidget {
         onChanged: onChanged,
         obscureText: obscureText,
         decoration: InputDecoration(
+          hintStyle:
+              TextStyle(color: Colors.black54, fontWeight: FontWeight.normal),
           hintText: hintText,
           border: InputBorder.none,
           icon: Icon(

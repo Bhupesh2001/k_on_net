@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_svg/svg.dart';
-// import 'package:k_on_net/Screens/chatRoom/chatRoom.dart';
+// import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
 // import 'package:k_on_net/Screens/signUp/register_screen.dart';
 // import 'package:k_on_net/components/already_have_an_account_check.dart';
 // import 'package:k_on_net/components/rounded_button.dart';

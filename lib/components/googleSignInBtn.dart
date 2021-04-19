@@ -1,7 +1,7 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_svg/svg.dart';
-// import 'package:k_on_net/Screens/chatRoom/chatRoom.dart';
+// import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
 // import 'package:k_on_net/services/auth.dart';
 // import '../constants.dart';
 //

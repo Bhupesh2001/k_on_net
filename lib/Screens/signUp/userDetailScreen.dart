@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:k_on_net/Screens/chatRoom/chatRoom.dart';
+import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
 import 'package:k_on_net/Screens/login/background.dart';
 import 'package:k_on_net/components/rounded_button.dart';
 import 'package:k_on_net/components/rounded_input_field.dart';
@@ -49,7 +48,9 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                   Text(
                     "Update  Your  Profile",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, letterSpacing: 3),
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 3,
+                        wordSpacing: 3),
                   ),
                   SizedBox(height: size.height * 0.06),
                   ClipRRect(
@@ -75,13 +76,14 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                             icon: Icons.person,
                             onChanged: (value) {},
                             controller: tecName,
+                            maxLength: 15,
                           ),
                           RoundedInputField(
                             onChanged: (value) {},
-                            obscureText: true, // typing becomes hidden
                             hintText: 'Team (optional)',
                             controller: tecTeam,
                             icon: Icons.lock,
+                            maxLength: 10,
                           ),
                         ],
                       ),
@@ -91,14 +93,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                     text: 'Finish',
                     press: () {
                       if (tecName.text.length < 2) {
-                        Fluttertoast.showToast(
-                            msg: "Wrong OTP",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
+                        flutterToast("Enter a valid name");
                       } else {
                         //TODO: get the name stored in tecName(name.length should be greater than 3, already implemented )
                         try {
@@ -106,16 +101,9 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                           updateUser.updateProfile(displayName: tecName.text);
                           userSetup(tecName.text, tecTeam.text);
                           Navigator.pushNamedAndRemoveUntil(
-                              context, ChatRoom.id, (route) => false);
+                              context, ChatRoomMain.id, (route) => false);
                         } catch (e) {
-                          Fluttertoast.showToast(
-                              msg: "Something went wrong",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.grey,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
+                          flutterToast("Something went wrong");
                         }
                       }
                     },

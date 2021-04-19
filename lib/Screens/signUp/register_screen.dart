@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:k_on_net/Screens/chatRoom/chatRoom.dart';
+import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
 import 'package:k_on_net/components/rounded_button.dart';
 import 'package:k_on_net/components/rounded_input_field.dart';
 import 'package:k_on_net/constants.dart';
@@ -58,7 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               .then((value) async {
             if (value.user != null) {
               Navigator.pushNamedAndRemoveUntil(
-                  context, ChatRoom.id, (route) => false);
+                  context, ChatRoomMain.id, (route) => false);
             }
           });
         },
@@ -107,6 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               textInputType: TextInputType.phone,
                               onChanged: (value) {},
                               controller: tecPhone,
+                              maxLength: 10,
                             ),
                             SizedBox(height: size.height * 0.03),
                             RoundedInputField(
@@ -116,41 +117,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               textInputType: TextInputType.number,
                               controller: tecOtp,
                               icon: Icons.lock,
+                              maxLength: 6,
                             ),
                           ],
                         ),
                       ),
-                      RoundedButton(
-                          text: otpSent ? 'Verify' : 'Send OTP',
-                          color: kPrimaryColor,
-                          textColor: Colors.white,
-                          press: () {
-                            if (otpSent) {
-                              if (tecOtp.text.length == 6)
-                                _verifyOtp(tecOtp.text);
-                              else {
-                                Fluttertoast.showToast(
-                                    msg: "Enter a valid OTP",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.CENTER,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.red,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                              }
-                            } else if (tecPhone.text.length == 10)
-                              _sendOtp(tecPhone.text);
-                            else {
-                              Fluttertoast.showToast(
-                                  msg: "Enter a valid Phone Number",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            }
-                          }),
+                      Hero(
+                        tag: 'button',
+                        child: RoundedButton(
+                            text: otpSent ? 'Verify' : 'Send OTP',
+                            color: kPrimaryColor,
+                            textColor: Colors.white,
+                            press: () {
+                              if (otpSent) {
+                                if (tecOtp.text.length == 6)
+                                  _verifyOtp(tecOtp.text);
+                                else {
+                                  flutterToast("Enter a valid OTP");
+                                }
+                              } else if (tecPhone.text.length == 10)
+                                _sendOtp(tecPhone.text);
+                              else
+                                flutterToast("Enter a valid Phone number");
+                            }),
+                      ),
                       SizedBox(height: size.height * 0.03),
                     ],
                   ),
