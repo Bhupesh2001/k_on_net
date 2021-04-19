@@ -12,7 +12,12 @@ class _MessageScreenState extends State<MessageScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: messagingAppBar(context, size),
+      appBar: messagingAppBar(
+        context: context,
+        userName: 'Bhupesh', // todo send the same of the user over here
+        lastSeen: '2 min ago', // todo send the last seen over here
+        isActive: true, // todo send the online status here
+      ),
     );
   }
 }

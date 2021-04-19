@@ -24,9 +24,12 @@ class ChatCard extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 5.0, bottom: 5),
-                  child: ProfileImage(),
+                Hero(
+                  tag: 'profileImage',
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 2.0, bottom: 5),
+                    child: ProfileImage(),
+                  ),
                 ),
                 if (chat.isActive)
                   Positioned(
