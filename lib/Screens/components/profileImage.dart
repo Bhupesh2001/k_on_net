@@ -8,7 +8,7 @@ class ProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: image,
+      child: Image.asset('assets/images/person.png'),
       height: edgeLength,
       width: edgeLength,
       decoration: BoxDecoration(

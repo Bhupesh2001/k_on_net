@@ -22,8 +22,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'K-On-Net Auth',
       theme: ThemeData(
+        textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
+            .apply(bodyColor: Colors.black),
         primaryColor: kPrimaryColor,
-        // scaffoldBackgroundColor: Colors.white,
         scaffoldBackgroundColor: Colors.white.withOpacity(0.98),
       ),
       darkTheme: ThemeData.dark().copyWith(
