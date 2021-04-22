@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:k_on_net/Screens/chatRoom/chatScreen.dart';
+import 'package:k_on_net/Screens/chatRoom/components/searchData.dart';
 import 'package:k_on_net/constants.dart';
 
 class ChatRoomMain extends StatefulWidget {
@@ -31,7 +32,9 @@ class _ChatRoomMainState extends State<ChatRoomMain> {
       ),
       body: ChatScreen(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showSearch(context: context, delegate: SearchData());
+        },
         backgroundColor: kSecondaryColor,
         child: Icon(
           Icons.search,

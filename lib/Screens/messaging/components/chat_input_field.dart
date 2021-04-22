@@ -5,9 +5,9 @@ class ChatInputField extends StatelessWidget {
   const ChatInputField({
     Key key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    TextEditingController tecMessage = new TextEditingController();
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       decoration: BoxDecoration(boxShadow: [
@@ -19,9 +19,12 @@ class ChatInputField extends StatelessWidget {
       child: SafeArea(
         child: Row(
           children: [
-            Icon(
-              Icons.mic,
-              color: kPrimaryColor,
+            InkWell(
+              onTap: () {},
+              child: Icon(
+                Icons.mic,
+                color: kPrimaryColor,
+              ),
             ),
             SizedBox(width: 5),
             Expanded(
@@ -33,39 +36,41 @@ class ChatInputField extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.sentiment_satisfied_alt,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          .color
-                          .withOpacity(0.64),
-                    ),
-                    SizedBox(width: 5),
+                    SizedBox(width: 8),
                     Expanded(
                       child: TextField(
+                        onChanged:
+                            null, // Its is called when an alphabet is added or removed from TextField
+                        controller: tecMessage,
                         decoration: InputDecoration(
                           hintText: "Type message",
                           border: InputBorder.none,
                         ),
+                        cursorColor: kPrimaryColor,
                       ),
                     ),
-                    Icon(
-                      Icons.attach_file,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          .color
-                          .withOpacity(0.64),
+                    InkWell(
+                      onTap: () {},
+                      child: Icon(
+                        Icons.attach_file,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .color
+                            .withOpacity(0.64),
+                      ),
                     ),
                     SizedBox(width: 5),
-                    Icon(
-                      Icons.camera_alt_outlined,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          .color
-                          .withOpacity(0.64),
+                    InkWell(
+                      onTap: () {},
+                      child: Icon(
+                        Icons.camera_alt_outlined,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .color
+                            .withOpacity(0.64),
+                      ),
                     ),
                   ],
                 ),
@@ -73,9 +78,12 @@ class ChatInputField extends StatelessWidget {
             ),
             SizedBox(width: 10),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                print(tecMessage.text);
+              },
               child: Icon(
                 Icons.send,
+                size: 30,
                 color: kPrimaryColor,
               ),
             )

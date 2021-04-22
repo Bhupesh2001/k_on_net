@@ -11,24 +11,27 @@ AppBar messagingAppBar(
         Theme.of(context).scaffoldBackgroundColor == kContentColorLightTheme
             ? kContentColorLightTheme
             : kPrimaryColor,
-    title: Row(
-      children: [
-        ProfileImage(),
-        SizedBox(width: size.width * 0.02),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              userName,
-              style: TextStyle(fontSize: 16),
-            ),
-            Text(
-              isActive ? 'Online' : lastSeen,
-              style: TextStyle(fontSize: 12),
-            ),
-          ],
-        ),
-      ],
+    title: InkWell(
+      onTap: () {},
+      child: Row(
+        children: [
+          ProfileImage(),
+          SizedBox(width: size.width * 0.02),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                userName,
+                style: TextStyle(fontSize: 16),
+              ),
+              Text(
+                isActive ? 'Online' : lastSeen,
+                style: TextStyle(fontSize: 12),
+              ),
+            ],
+          ),
+        ],
+      ),
     ),
     actions: [
       IconButton(icon: Icon(Icons.phone), onPressed: () {}),

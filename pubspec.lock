@@ -153,6 +153,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_autolink_text:
+    dependency: "direct main"
+    description:
+      name: flutter_autolink_text
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0+1"
   flutter_svg:
     dependency: "direct main"
     description:

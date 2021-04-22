@@ -3,7 +3,6 @@ import 'package:k_on_net/Screens/components/profileImage.dart';
 import 'package:k_on_net/constants.dart';
 import 'file:///D:/K%20On%20Net%20OFFICIAL/k_on_net/lib/Screens/messaging/components/types_of_messages/text_message.dart';
 import 'package:k_on_net/model/chat_message.dart';
-
 import 'types_of_messages/audioMessage.dart';
 import 'types_of_messages/videoMessage.dart';
 
@@ -19,13 +18,8 @@ class Message extends StatelessWidget {
           return TextMessage(message: message);
           break;
         case ChatMessageType.audio:
-          return AudioMessage(
-            message: message,
-          );
+          return AudioMessage(message: message);
           break;
-        // case ChatMessageType.image:
-        //   return TextMessage(message: message);
-        //   break;
         case ChatMessageType.video:
           return VideoMessage();
           break;
@@ -36,17 +30,37 @@ class Message extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(top: 10),
-      child: Row(
-        mainAxisAlignment:
-            message.isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: message.isSender
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
         children: [
-          if (!message.isSender) ProfileImage(edgeLength: 23),
-          SizedBox(width: 10),
-          messageContent(message),
-          if (message.isSender)
-            MessageStatusDot(
-              status: message.messageStatus,
+          Row(
+            mainAxisAlignment: message.isSender
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
+            children: [
+              if (!message.isSender) ProfileImage(edgeLength: 23),
+              SizedBox(width: 10),
+              messageContent(message),
+              if (message.isSender)
+                MessageStatusDot(
+                  status: message.messageStatus,
+                ),
+            ],
+          ),
+          Padding(
+            padding: message.isSender
+                ? EdgeInsets.only(right: 29, top: 1)
+                : EdgeInsets.only(left: 45, top: 1),
+            child: Opacity(
+              opacity: 0.5,
+              child: Text(
+                message.sendTime,
+                style: TextStyle(fontSize: 9),
+              ),
             ),
+          )
         ],
       ),
     );
@@ -62,7 +76,7 @@ class MessageStatusDot extends StatelessWidget {
     Color dotColor(MessageStatus status) {
       switch (status) {
         case MessageStatus.not_sent:
-          return Theme.of(context).errorColor;
+          return Colors.transparent;
           break;
         case MessageStatus.not_view:
           return kPrimaryColor;
@@ -84,7 +98,7 @@ class MessageStatusDot extends StatelessWidget {
           return Icons.done;
           break;
         case MessageStatus.not_received:
-          return Icons.close;
+          return Icons.access_time_outlined;
           break;
         default:
           return null;

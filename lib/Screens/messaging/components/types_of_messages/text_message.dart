@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_autolink_text/flutter_autolink_text.dart';
 import 'package:k_on_net/model/chat_message.dart';
 
 import '../../../../constants.dart';
@@ -22,12 +23,16 @@ class TextMessage extends StatelessWidget {
             : 0.1),
         borderRadius: BorderRadius.circular(30),
       ),
-      child: Text(
-        message.text,
-        style: TextStyle(
+      child: AutolinkText(
+        text: message.text,
+        textStyle: TextStyle(
             color: message.isSender
                 ? Colors.white
                 : Theme.of(context).textTheme.bodyText1.color),
+        linkStyle: TextStyle(color: Colors.blue),
+        onWebLinkTap: (link) => print(link),
+        onEmailTap: (link) => print(link),
+        onPhoneTap: (link) => print(link),
       ),
     );
   }
