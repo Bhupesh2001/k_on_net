@@ -33,7 +33,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (value.user != null) {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => UserDetailsScreen()),
+              MaterialPageRoute(
+                  builder: (context) =>
+                      UserDetailsScreen(phone: tecPhone.text)),
               (route) => false);
         }
       });
@@ -65,9 +67,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         verificationFailed: (FirebaseAuthException e) {
           print(e.message);
         },
-        codeSent: (String verficationID, int resendToken) {
+        codeSent: (String verificationID, int resendToken) {
           setState(() {
-            _verificationCode = verficationID;
+            _verificationCode = verificationID;
             otpSent = true;
           });
         },

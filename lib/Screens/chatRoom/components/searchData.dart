@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
 import 'package:k_on_net/Screens/components/profileImage.dart';
 import 'package:k_on_net/Screens/messaging/messageScreen.dart';
@@ -78,7 +77,13 @@ class SearchData extends SearchDelegate<String> {
         leading: ProfileImage(edgeLength: 35),
         onTap: () {
           close(context, null);
-          Navigator.pushNamed(context, MessageScreen.id);
+          Chat user = chatData[index];
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MessageScreen(details: user),
+            ),
+          );
         },
         title: RichText(
           text: TextSpan(

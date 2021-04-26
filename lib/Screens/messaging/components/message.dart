@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:k_on_net/Screens/components/profileImage.dart';
-import 'package:k_on_net/constants.dart';
 import 'file:///D:/K%20On%20Net%20OFFICIAL/k_on_net/lib/Screens/messaging/components/types_of_messages/text_message.dart';
 import 'package:k_on_net/model/chat_message.dart';
+import 'messageStatusDot.dart';
 import 'types_of_messages/audioMessage.dart';
 import 'types_of_messages/videoMessage.dart';
 
-class Message extends StatelessWidget {
+class Message extends StatefulWidget {
   final ChatMessage message;
 
-  const Message({Key key, @required this.message}) : super(key: key);
+  const Message({Key key, this.message}) : super(key: key);
+  @override
+  _MessageState createState() => _MessageState(message);
+}
+
+class _MessageState extends State<Message> {
+  final ChatMessage message;
+
+  _MessageState(this.message);
   @override
   Widget build(BuildContext context) {
     Widget messageContent(ChatMessage message) {
@@ -62,62 +70,6 @@ class Message extends StatelessWidget {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class MessageStatusDot extends StatelessWidget {
-  final MessageStatus status;
-
-  const MessageStatusDot({Key key, this.status}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    Color dotColor(MessageStatus status) {
-      switch (status) {
-        case MessageStatus.not_sent:
-          return Colors.transparent;
-          break;
-        case MessageStatus.not_view:
-          return kPrimaryColor;
-          break;
-        case MessageStatus.viewed:
-          return kPrimaryColor;
-          break;
-        case MessageStatus.not_received:
-          return kPrimaryColor;
-          break;
-        default:
-          return Colors.transparent;
-      }
-    }
-
-    IconData statusIcon(MessageStatus status) {
-      switch (status) {
-        case MessageStatus.viewed:
-          return Icons.done;
-          break;
-        case MessageStatus.not_received:
-          return Icons.access_time_outlined;
-          break;
-        default:
-          return null;
-          break;
-      }
-    }
-
-    return Container(
-      margin: EdgeInsets.only(left: 10),
-      height: 12,
-      width: 12,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: dotColor(status),
-      ),
-      child: Icon(
-        statusIcon(status),
-        size: 8,
-        color: Colors.white,
       ),
     );
   }

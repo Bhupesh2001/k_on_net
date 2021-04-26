@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           hintColor: kContentColorLightTheme.withOpacity(0.3),
           textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
               .apply(bodyColor: kContentColorDarkTheme)),
-      home: ChatRoomMain(),
+      home: UserDetailsScreen(),
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ChatRoomMain.id: (context) => ChatRoomMain(),

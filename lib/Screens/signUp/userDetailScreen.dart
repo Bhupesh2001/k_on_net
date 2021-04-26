@@ -10,15 +10,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class UserDetailsScreen extends StatefulWidget {
   static String id = 'userDetailsScreen';
+  final String phone;
+
+  const UserDetailsScreen({Key key, this.phone = "9520223341"})
+      : super(key: key);
   @override
-  _UserDetailsScreenState createState() => _UserDetailsScreenState();
+  _UserDetailsScreenState createState() => _UserDetailsScreenState(phone);
 }
 
 class _UserDetailsScreenState extends State<UserDetailsScreen> {
+  final String phone;
+
+  _UserDetailsScreenState(this.phone);
   Future<void> userSetup(String displayName, String teamName) async {
-    CollectionReference users = FirebaseFirestore.instance.collection('Users');
     FirebaseAuth auth = FirebaseAuth.instance;
     String uid = auth.currentUser.uid.toString();
+    CollectionReference users = FirebaseFirestore.instance
+        .collection("Users")
+        .doc(phone)
+        .collection(uid);
     users.add({'userName:': displayName, 'uid': uid, 'teamName': teamName});
     return;
   }

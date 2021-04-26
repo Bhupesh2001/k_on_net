@@ -17,9 +17,16 @@ class _ChatScreenState extends State<ChatScreen> {
           child: ListView.builder(
             itemCount: chatData.length,
             itemBuilder: (context, index) => ChatCard(
-              chat: chatData[index],
-              press: () => Navigator.pushNamed(context, MessageScreen.id),
-            ),
+                chat: chatData[index],
+                press: () {
+                  Chat c = chatData[index];
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MessageScreen(details: c),
+                    ),
+                  );
+                }),
           ),
         ),
       ],
