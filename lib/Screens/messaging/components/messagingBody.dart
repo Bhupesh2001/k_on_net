@@ -17,7 +17,6 @@ class _MessagingBodyState extends State<MessagingBody> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ListView.builder(
-              reverse: true,
               itemCount: demoChatMessage.length,
               itemBuilder: (context, index) =>
                   Message(message: demoChatMessage[index]),
