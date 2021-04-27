@@ -5,6 +5,7 @@ import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
 import 'package:k_on_net/components/rounded_button.dart';
 import 'package:k_on_net/components/rounded_input_field.dart';
 import 'package:k_on_net/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'userDetailScreen.dart';
@@ -31,9 +32,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
               verificationId: _verificationCode, smsCode: pin))
           .then((value) async {
         if (value.user != null) {
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          preferences.setBool('isLoggedIn', true);
+          print("isLoggedIn after login" +
+              preferences.getBool('isLoggedIn').toString());
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => UserDetailsScreen()),
+              MaterialPageRoute(
+                  builder: (context) =>
+                      UserDetailsScreen(phone: tecPhone.text)),
               (route) => false);
         }
       });
@@ -64,6 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         verificationFailed: (FirebaseAuthException e) {
           print(e.message);
+          flutterToast(e.message);
         },
         codeSent: (String verficationID, int resendToken) {
           setState(() {
