@@ -86,6 +86,7 @@ class _AudioMessageState extends State<AudioMessage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double _dotPos = 0;
     bool played = false;
     return Container(
       // height: 35,

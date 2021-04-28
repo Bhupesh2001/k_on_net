@@ -4,7 +4,6 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:k_on_net/Screens/chatRoom/chatScreen.dart';
 import 'package:k_on_net/Screens/chatRoom/components/searchData.dart';
 import 'package:k_on_net/constants.dart';
-import 'components/popupMenu.dart';
 
 class ChatRoomMain extends StatefulWidget {
   static String id = 'chat_screen';
@@ -14,7 +13,6 @@ class ChatRoomMain extends StatefulWidget {
 
 class _ChatRoomMainState extends State<ChatRoomMain> {
   int _selectedIndex = 0;
-  xyz() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +28,7 @@ class _ChatRoomMainState extends State<ChatRoomMain> {
           'K-On-Net',
           style: TextStyle(letterSpacing: 1, color: Colors.white),
         ),
-        actions: [PopupMenu()],
+        actions: [IconButton(icon: Icon(Icons.more_vert), onPressed: () {})],
       ),
       body: ChatScreen(),
       floatingActionButton: FloatingActionButton(
