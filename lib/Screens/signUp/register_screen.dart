@@ -82,69 +82,70 @@ class _RegisterScreenState extends State<RegisterScreen> {
     Size size = MediaQuery.of(context).size;
     return isLoading
         ? Container(
-      alignment: Alignment.center,
-      child: CircularProgressIndicator(),
-    )
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(),
+          )
         : Scaffold(
-      body: SafeArea(
-        child: Background(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: size.height * 0.03),
-                SvgPicture.asset(
-                  'assets/icons/signup.svg',
-                  height: size.height * 0.35,
-                ),
-                Form(
+            body: SafeArea(
+              child: Background(
+                child: SingleChildScrollView(
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      RoundedInputField(
-                        hintText: 'Phone',
-                        textInputType: TextInputType.phone,
-                        onChanged: (value) {},
-                        controller: tecPhone,
-                        maxLength: 10,
+                      SizedBox(height: size.height * 0.03),
+                      SvgPicture.asset(
+                        'assets/icons/signup.svg',
+                        height: size.height * 0.35,
+                      ),
+                      Form(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            RoundedInputField(
+                              hintText: 'Phone',
+                              textInputType: TextInputType.phone,
+                              onChanged: (value) {},
+                              controller: tecPhone,
+                              maxLength: 10,
+                            ),
+                            SizedBox(height: size.height * 0.03),
+                            RoundedInputField(
+                              onChanged: (value) {},
+                              obscureText: true,
+                              // typing becomes hidden
+                              hintText: 'OTP',
+                              textInputType: TextInputType.number,
+                              controller: tecOtp,
+                              icon: Icons.lock,
+                              maxLength: 6,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Hero(
+                        tag: 'button',
+                        child: RoundedButton(
+                            text: otpSent ? 'Verify' : 'Send OTP',
+                            color: kPrimaryColor,
+                            textColor: Colors.white,
+                            press: () {
+                              if (otpSent) {
+                                if (tecOtp.text.length == 6)
+                                  _verifyOtp(tecOtp.text);
+                                else {
+                                  flutterToast("Enter a valid OTP");
+                                }
+                              } else if (tecPhone.text.length == 10)
+                                _sendOtp(tecPhone.text);
+                              else
+                                flutterToast("Enter a valid Phone number");
+                            }),
                       ),
                       SizedBox(height: size.height * 0.03),
-                      RoundedInputField(
-                        onChanged: (value) {},
-                        obscureText: true, // typing becomes hidden
-                        hintText: 'OTP',
-                        textInputType: TextInputType.number,
-                        controller: tecOtp,
-                        icon: Icons.lock,
-                        maxLength: 6,
-                      ),
                     ],
                   ),
                 ),
-                Hero(
-                  tag: 'button',
-                  child: RoundedButton(
-                      text: otpSent ? 'Verify' : 'Send OTP',
-                      color: kPrimaryColor,
-                      textColor: Colors.white,
-                      press: () {
-                        if (otpSent) {
-                          if (tecOtp.text.length == 6)
-                            _verifyOtp(tecOtp.text);
-                          else {
-                            flutterToast("Enter a valid OTP");
-                          }
-                        } else if (tecPhone.text.length == 10)
-                          _sendOtp(tecPhone.text);
-                        else
-                          flutterToast("Enter a valid Phone number");
-                      }),
-                ),
-                SizedBox(height: size.height * 0.03),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 }
