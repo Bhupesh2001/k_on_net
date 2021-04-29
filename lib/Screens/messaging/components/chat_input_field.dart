@@ -73,7 +73,7 @@ class ChatInputField extends StatelessWidget {
                     Expanded(
                       child: TextField(
                         onChanged:
-                        null, // Its is called when an alphabet is added or removed from TextField
+                            null, // Its is called when an alphabet is added or removed from TextField
                         controller: tecMessage,
                         decoration: InputDecoration(
                           hintText: "Type message",
