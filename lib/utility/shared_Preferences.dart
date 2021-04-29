@@ -6,15 +6,23 @@ class SharedPreferencesHelper {
   static void initialize() async =>
       spObject = await SharedPreferences.getInstance();
 
-  static bool isLoggedIn() => (spObject.getBool('isLoggedIn') ?? false);
+  static bool isLoggedIn() {
+    if (spObject.getBool('isLoggedIn') != null)
+      return spObject.getBool('isLoggedIn');
+    return false;
+  }
 
-  static bool isDetailsFilled() => (spObject.getBool('detailsFilled') ?? false);
+  static bool isDetailsFilled() {
+    if (spObject.getBool('detailsFilled') != null)
+      return spObject.getBool('detailsFilled');
+    return false;
+  }
 
   static loginSuccessful() async => spObject.setBool('isLoggedIn', true);
 
   static void setCurrentLoginData(String phone, String uid) {
     spObject.setString('currentUserPhone', phone);
-    spObject.setString('currentUserUID', uid);
+    spObject.setString('myUid', uid);
   }
 
   static void setCurrentProfileData(String name, String team) {
@@ -26,4 +34,6 @@ class SharedPreferencesHelper {
     spObject.setBool('isLoggedIn', false);
     spObject.setBool('detailsFilled', false);
   }
+
+  static String myUid() => spObject.getString('myUid');
 }

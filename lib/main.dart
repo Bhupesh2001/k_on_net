@@ -8,11 +8,12 @@ import 'package:k_on_net/Screens/signUp/register_screen.dart';
 import 'package:k_on_net/Screens/signUp/userDetailScreen.dart';
 import 'package:k_on_net/constants.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
-  SharedPreferencesHelper.initialize();
+  await Firebase.initializeApp();
+  SharedPreferencesHelper.spObject = await SharedPreferences.getInstance();
   runApp(MyApp());
 }
 
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
         ChatRoomMain.id: (context) => ChatRoomMain(),
         RegisterScreen.id: (context) => RegisterScreen(),
         UserDetailsScreen.id: (context) => UserDetailsScreen(),
-        MessageScreen.id: (context) => MessageScreen(),
+        MessageScreen.id: (context) => MessageScreen(null),
       },
     );
   }

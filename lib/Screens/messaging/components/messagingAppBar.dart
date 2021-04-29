@@ -3,8 +3,7 @@ import 'package:k_on_net/Screens/components/profileImage.dart';
 
 import '../../../constants.dart';
 
-AppBar messagingAppBar(
-    {BuildContext context, String userName, String lastSeen, bool isActive}) {
+AppBar messagingAppBar({BuildContext context, doc}) {
   Size size = MediaQuery.of(context).size;
   return AppBar(
     backgroundColor:
@@ -21,11 +20,11 @@ AppBar messagingAppBar(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                userName,
+                doc['name'],
                 style: TextStyle(fontSize: 16),
               ),
               Text(
-                isActive ? 'Online' : lastSeen,
+                doc['isOnline'] ? 'Online' : doc['lastSeen'],
                 style: TextStyle(fontSize: 12),
               ),
             ],

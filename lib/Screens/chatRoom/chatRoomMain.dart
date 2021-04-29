@@ -4,7 +4,6 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:k_on_net/Screens/chatRoom/chatScreen.dart';
 import 'package:k_on_net/Screens/chatRoom/components/searchData.dart';
 import 'package:k_on_net/constants.dart';
-
 import 'components/popupMenu.dart';
 
 class ChatRoomMain extends StatefulWidget {

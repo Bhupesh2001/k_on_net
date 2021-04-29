@@ -1,10 +1,43 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:k_on_net/utility/shared_Preferences.dart';
 import '../../../constants.dart';
 
 class ChatInputField extends StatelessWidget {
-  const ChatInputField({
-    Key key,
-  }) : super(key: key);
+  final doc;
+  final String groupChatId;
+
+  const ChatInputField(this.doc, this.groupChatId);
+
+  sendMsg(String msg) {
+    print("sendMsgStarted");
+
+    /// Upload images to firebase and returns a URL
+    if (msg.length > 0) {
+      print('this is called $msg');
+      var ref = FirebaseFirestore.instance
+          .collection('messages')
+          .doc(groupChatId)
+          .collection(groupChatId)
+          .doc(DateTime.now().millisecondsSinceEpoch.toString());
+
+      FirebaseFirestore.instance.runTransaction((transaction) async {
+        transaction.set(ref, {
+          "senderId": SharedPreferencesHelper.myUid(),
+          "anotherUserId": doc['id'],
+          "timestamp": DateTime.now().millisecondsSinceEpoch.toString(),
+          'content': msg,
+          "type": 'text',
+        });
+      });
+
+      // scrollController.animateTo(0.0,
+      //     duration: Duration(milliseconds: 100), curve: Curves.bounceInOut);
+    } else {
+      print('Please enter some text to send');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController tecMessage = new TextEditingController();
@@ -40,7 +73,7 @@ class ChatInputField extends StatelessWidget {
                     Expanded(
                       child: TextField(
                         onChanged:
-                            null, // Its is called when an alphabet is added or removed from TextField
+                        null, // Its is called when an alphabet is added or removed from TextField
                         controller: tecMessage,
                         decoration: InputDecoration(
                           hintText: "Type message",
@@ -79,7 +112,7 @@ class ChatInputField extends StatelessWidget {
             SizedBox(width: 10),
             InkWell(
               onTap: () {
-                print(tecMessage.text);
+                sendMsg(tecMessage.text);
               },
               child: Icon(
                 Icons.send,

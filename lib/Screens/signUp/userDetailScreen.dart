@@ -19,12 +19,16 @@ class UserDetailsScreen extends StatefulWidget {
 class _UserDetailsScreenState extends State<UserDetailsScreen> {
   Future<void> userSetup(String displayName, String teamName) async {
     CollectionReference users = FirebaseFirestore.instance.collection('Users');
-    // FirebaseAuth auth = FirebaseAuth.instance;
-    // String uid = auth.currentUser.uid.toString();
+    // user
     users.add({
-      'userName:': displayName,
-      'uid': SharedPreferencesHelper.spObject.getString('currentUserUID'),
-      'teamName': teamName
+      'name': displayName,
+      'id': SharedPreferencesHelper.myUid(),
+      'teamName': teamName,
+      'content': '',
+      'isOnline': true,
+      'lastMessageTime': '',
+      'lastSeen': '',
+      'profile_pic': ''
     });
     SharedPreferencesHelper.setCurrentProfileData(displayName, teamName);
     SharedPreferencesHelper.spObject.setBool('detailsFilled', true);
@@ -104,7 +108,6 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                       if (tecName.text.length < 2) {
                         flutterToast("Enter a valid name");
                       } else {
-                        //TODO: get the name stored in tecName(name.length should be greater than 3, already implemented )
                         try {
                           User updateUser = FirebaseAuth.instance.currentUser;
                           updateUser.updateProfile(displayName: tecName.text);

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:k_on_net/Screens/components/profileImage.dart';
-import 'package:k_on_net/model/Chat.dart';
+import 'package:k_on_net/Screens/messaging/messageScreen.dart';
 
 class ChatCard extends StatelessWidget {
-  const ChatCard({
-    Key key,
-    @required this.chat,
-    @required this.press,
-  }) : super(key: key);
-  final Chat chat;
-  final VoidCallback press;
+  final doc;
+
+  const ChatCard(this.doc);
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var padding = 0.045;
     return InkWell(
-      onTap: press,
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => MessageScreen(doc)));
+      },
       child: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: size.width * (padding - 0.008),
@@ -28,7 +28,7 @@ class ChatCard extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 2.0, bottom: 5),
                   child: ProfileImage(),
                 ),
-                if (chat.isActive)
+                if (doc['isOnline'])
                   Positioned(
                     bottom: 0,
                     left: 0,
@@ -54,7 +54,7 @@ class ChatCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      chat.name,
+                      doc['name'],
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                     ),
@@ -64,7 +64,7 @@ class ChatCard extends StatelessWidget {
                     Opacity(
                       opacity: 0.64,
                       child: Text(
-                        chat.lastMessage,
+                        doc['content'],
                         style: TextStyle(fontSize: 15),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -74,7 +74,7 @@ class ChatCard extends StatelessWidget {
                 ),
               ),
             ),
-            Opacity(opacity: 0.64, child: Text(chat.time))
+            Opacity(opacity: 0.64, child: Text(doc['lastMessageTime'])),
           ],
         ),
       ),

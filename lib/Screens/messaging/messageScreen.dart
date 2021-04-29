@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'components/messagingAppBar.dart';
 import 'components/messagingBody.dart';
 
 class MessageScreen extends StatefulWidget {
   static String id = 'MessageScreen';
+  final doc;
+
+  const MessageScreen(this.doc);
+
   @override
   _MessageScreenState createState() => _MessageScreenState();
 }
@@ -14,11 +19,9 @@ class _MessageScreenState extends State<MessageScreen> {
     return Scaffold(
       appBar: messagingAppBar(
         context: context,
-        userName: 'Bhupesh', // todo send the same of the user over here
-        lastSeen: '2 min ago', // todo send the last seen over here
-        isActive: true, // todo send the online status here
+        doc: widget.doc,
       ),
-      body: MessagingBody(),
+      body: MessagingBody(widget.doc),
     );
   }
 }
