@@ -36,6 +36,7 @@ dependencies:
   google_nav_bar: ^5.0.3
   google_fonts: ^2.0.0
   flutter_autolink_text: ^1.0.0+1
+  shared_preferences: ^2.0.5
   firebase_core: ^1.0.3
   pinput: ^1.2.0
 

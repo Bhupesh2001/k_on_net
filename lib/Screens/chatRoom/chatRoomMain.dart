@@ -5,8 +5,11 @@ import 'package:k_on_net/Screens/chatRoom/chatScreen.dart';
 import 'package:k_on_net/Screens/chatRoom/components/searchData.dart';
 import 'package:k_on_net/constants.dart';
 
+import 'components/popupMenu.dart';
+
 class ChatRoomMain extends StatefulWidget {
   static String id = 'chat_screen';
+
   @override
   _ChatRoomMainState createState() => _ChatRoomMainState();
 }
@@ -28,7 +31,7 @@ class _ChatRoomMainState extends State<ChatRoomMain> {
           'K-On-Net',
           style: TextStyle(letterSpacing: 1, color: Colors.white),
         ),
-        actions: [IconButton(icon: Icon(Icons.more_vert), onPressed: () {})],
+        actions: [PopupMenu()],
       ),
       body: ChatScreen(),
       floatingActionButton: FloatingActionButton(

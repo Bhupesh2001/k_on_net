@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
@@ -5,11 +7,11 @@ import 'package:k_on_net/Screens/login/background.dart';
 import 'package:k_on_net/components/rounded_button.dart';
 import 'package:k_on_net/components/rounded_input_field.dart';
 import 'package:k_on_net/constants.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:k_on_net/utility/shared_Preferences.dart';
 
 class UserDetailsScreen extends StatefulWidget {
   static String id = 'userDetailsScreen';
+
   @override
   _UserDetailsScreenState createState() => _UserDetailsScreenState();
 }
@@ -17,15 +19,22 @@ class UserDetailsScreen extends StatefulWidget {
 class _UserDetailsScreenState extends State<UserDetailsScreen> {
   Future<void> userSetup(String displayName, String teamName) async {
     CollectionReference users = FirebaseFirestore.instance.collection('Users');
-    FirebaseAuth auth = FirebaseAuth.instance;
-    String uid = auth.currentUser.uid.toString();
-    users.add({'userName:': displayName, 'uid': uid, 'teamName': teamName});
+    // FirebaseAuth auth = FirebaseAuth.instance;
+    // String uid = auth.currentUser.uid.toString();
+    users.add({
+      'userName:': displayName,
+      'uid': SharedPreferencesHelper.spObject.getString('currentUserUID'),
+      'teamName': teamName
+    });
+    SharedPreferencesHelper.setCurrentProfileData(displayName, teamName);
+    SharedPreferencesHelper.spObject.setBool('detailsFilled', true);
     return;
   }
 
   final formKey = GlobalKey<FormState>();
   TextEditingController tecName = new TextEditingController();
   TextEditingController tecTeam = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

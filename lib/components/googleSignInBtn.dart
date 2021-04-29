@@ -2,7 +2,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_svg/svg.dart';
 // import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
-// import 'package:k_on_net/services/auth.dart';
+// import 'package:k_on_net/services/googleAuth.dart';
 // import '../constants.dart';
 //
 // class googleSigninBtn extends StatelessWidget {
