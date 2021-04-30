@@ -18,18 +18,27 @@ class UserDetailsScreen extends StatefulWidget {
 
 class _UserDetailsScreenState extends State<UserDetailsScreen> {
   Future<void> userSetup(String displayName, String teamName) async {
-    CollectionReference users = FirebaseFirestore.instance.collection('Users');
-    // user
-    users.add({
-      'name': displayName,
-      'id': SharedPreferencesHelper.myUid(),
-      'teamName': teamName,
-      'content': '',
-      'isOnline': true,
-      'lastMessageTime': '',
-      'lastSeen': '',
-      'profile_pic': ''
-    });
+    final result = (await FirebaseFirestore.instance
+            .collection('users')
+            .where('id', isEqualTo: SharedPreferencesHelper.myUid())
+            .get())
+        .docs;
+
+    if (result.length == 0) {
+      FirebaseFirestore.instance
+          .collection('Users')
+          .doc(SharedPreferencesHelper.myUid())
+          .set({
+        'name': displayName,
+        'id': SharedPreferencesHelper.myUid(),
+        'teamName': teamName,
+        'content': '',
+        'isOnline': true,
+        'lastMessageTime': '',
+        'lastSeen': '',
+        'profile_pic': ''
+      });
+    }
     SharedPreferencesHelper.setCurrentProfileData(displayName, teamName);
     SharedPreferencesHelper.spObject.setBool('detailsFilled', true);
     return;
