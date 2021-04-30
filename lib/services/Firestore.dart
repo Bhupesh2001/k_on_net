@@ -1,33 +1,40 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter/material.dart';
-//
-// sendMsg(
-//   String message,
-// ) {
-//   String msg = message;
-//
-//   /// Upload images to firebase and returns a URL
-//   if (msg.isNotEmpty) {
-//     print('this is called $msg');
-//     var ref = FirebaseFirestore.instance
-//         .collection('messages')
-//         .doc(groupChatId)
-//         .collection(groupChatId)
-//         .document(DateTime.now().millisecondsSinceEpoch.toString());
-//
-//     FirebaseFirestore.instance.runTransaction((transaction) async {
-//       await transaction.set(ref, {
-//         "senderId": userID,
-//         "anotherUserId": widget.docs['id'],
-//         "timestamp": DateTime.now().millisecondsSinceEpoch.toString(),
-//         'content': msg,
-//         "type": 'text',
-//       });
-//     });
-//
-//     scrollController.animateTo(0.0,
-//         duration: Duration(milliseconds: 100), curve: Curves.bounceInOut);
-//   } else {
-//     print('Please enter some text to send');
-//   }
-// }
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:k_on_net/utility/shared_Preferences.dart';
+
+class FireStoreHelper {
+  static String _groupChatId;
+
+  static String getGroupChatId(DocumentSnapshot docs) {
+    print("getGroupChatIdStarted");
+    String userID = SharedPreferencesHelper.myUid();
+    String anotherUserId = docs['id'];
+
+    if (userID.compareTo(anotherUserId) > 0)
+      _groupChatId = '$userID - $anotherUserId';
+    else
+      _groupChatId = '$anotherUserId - $userID';
+
+    return _groupChatId;
+  }
+
+  static Future<void> createRoom(DocumentSnapshot docs) async {
+    getGroupChatId(docs);
+    CollectionReference users = FirebaseFirestore.instance
+        .collection('Messages')
+        .doc(_groupChatId)
+        .collection(_groupChatId);
+
+    print(_groupChatId);
+
+    if (await users.snapshots().length == 0) {
+      print("IF");
+      users.add({
+        // "senderId": '',
+        // "anotherUserId": '',
+        // "timestamp": DateTime.now().millisecondsSinceEpoch.toString(),
+        // 'content': 'msg',
+        // "type": 'text',
+      });
+    }
+  }
+}

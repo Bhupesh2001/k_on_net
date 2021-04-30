@@ -28,7 +28,10 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('Users').snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection("Users")
+          .where("id", isNotEqualTo: userId)
+          .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data != null) {
           return ListView.builder(

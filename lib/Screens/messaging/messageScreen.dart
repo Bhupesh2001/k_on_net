@@ -16,12 +16,14 @@ class MessageScreen extends StatefulWidget {
 class _MessageScreenState extends State<MessageScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: messagingAppBar(
-        context: context,
-        doc: widget.doc,
+    return SafeArea(
+      child: Scaffold(
+        appBar: messagingAppBar(
+          context: context,
+          doc: widget.doc,
+        ),
+        body: MessagingBody(widget.doc),
       ),
-      body: MessagingBody(widget.doc),
     );
   }
 }

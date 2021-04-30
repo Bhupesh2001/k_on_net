@@ -38,6 +38,23 @@ class ChatInputField extends StatelessWidget {
     }
   }
 
+  sendText(String msg) {
+    CollectionReference users = FirebaseFirestore.instance
+        .collection('Messages')
+        .doc(groupChatId)
+        .collection(groupChatId);
+
+    print(groupChatId);
+
+    users.add({
+      "senderId": SharedPreferencesHelper.myUid(),
+      "anotherUserId": doc['id'],
+      "timestamp": DateTime.now().millisecondsSinceEpoch.toString(),
+      'content': msg,
+      "type": 'text',
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController tecMessage = new TextEditingController();
@@ -112,7 +129,11 @@ class ChatInputField extends StatelessWidget {
             SizedBox(width: 10),
             InkWell(
               onTap: () {
-                sendMsg(tecMessage.text);
+                if (tecMessage.text.trim().isNotEmpty)
+                  sendText(tecMessage.text);
+                tecMessage.clear();
+                if (!FocusScope.of(context).hasPrimaryFocus)
+                  FocusScope.of(context).unfocus();
               },
               child: Icon(
                 Icons.send,
