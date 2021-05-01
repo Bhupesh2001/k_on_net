@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:k_on_net/components/loadingIndicator.dart';
 import 'package:k_on_net/services/Firestore.dart';
 import 'chat_input_field.dart';
 
@@ -52,9 +53,7 @@ class _MessagingBodyState extends State<MessagingBody> {
               child: SizedBox(
                 height: 36,
                 width: 36,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                ),
+                child: LoadingIndicator(isLoading: true),
               ),
             );
           }

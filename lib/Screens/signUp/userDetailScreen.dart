@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
 import 'package:k_on_net/Screens/login/background.dart';
+import 'package:k_on_net/components/loadingIndicator.dart';
 import 'package:k_on_net/components/rounded_button.dart';
 import 'package:k_on_net/components/rounded_input_field.dart';
 import 'package:k_on_net/constants.dart';
@@ -11,26 +12,29 @@ import 'package:k_on_net/utility/shared_Preferences.dart';
 
 class UserDetailsScreen extends StatefulWidget {
   static String id = 'userDetailsScreen';
+  final String uid;
+  final String phone;
+
+  const UserDetailsScreen(this.phone, this.uid);
 
   @override
   _UserDetailsScreenState createState() => _UserDetailsScreenState();
 }
 
 class _UserDetailsScreenState extends State<UserDetailsScreen> {
+  bool isLoading = false;
   Future<void> userSetup(String displayName, String teamName) async {
     final result = (await FirebaseFirestore.instance
             .collection('users')
-            .where('id', isEqualTo: SharedPreferencesHelper.myUid())
+            .where('id', isEqualTo: widget.uid)
             .get())
         .docs;
 
     if (result.length == 0) {
-      FirebaseFirestore.instance
-          .collection('Users')
-          .doc(SharedPreferencesHelper.myUid())
-          .set({
+      print("UID " + widget.uid);
+      FirebaseFirestore.instance.collection('Users').doc(widget.uid).set({
         'name': displayName,
-        'id': SharedPreferencesHelper.myUid(),
+        'id': widget.uid,
         'teamName': teamName,
         'content': '',
         'isOnline': true,
@@ -39,9 +43,34 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
         'profile_pic': ''
       });
     }
+    SharedPreferencesHelper.setCurrentLoginData(widget.phone, widget.uid);
     SharedPreferencesHelper.setCurrentProfileData(displayName, teamName);
     SharedPreferencesHelper.spObject.setBool('detailsFilled', true);
     return;
+  }
+
+  onClick() {
+    if (tecName.text.trim().length < 2) {
+      flutterToast("Enter a valid name");
+    } else {
+      try {
+        setState(() {
+          isLoading = true;
+        });
+        if (!FocusScope.of(context).hasPrimaryFocus)
+          FocusScope.of(context).unfocus();
+        User updateUser = FirebaseAuth.instance.currentUser;
+        updateUser.updateProfile(displayName: tecName.text);
+        userSetup(tecName.text, tecTeam.text);
+        Navigator.pushNamedAndRemoveUntil(
+            context, ChatRoomMain.id, (route) => false);
+      } catch (e) {
+        setState(() {
+          isLoading = false;
+        });
+        flutterToast(e.toString());
+      }
+    }
   }
 
   final formKey = GlobalKey<FormState>();
@@ -114,19 +143,9 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                   RoundedButton(
                     text: 'Finish',
                     press: () {
-                      if (tecName.text.length < 2) {
-                        flutterToast("Enter a valid name");
-                      } else {
-                        try {
-                          User updateUser = FirebaseAuth.instance.currentUser;
-                          updateUser.updateProfile(displayName: tecName.text);
-                          userSetup(tecName.text, tecTeam.text);
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, ChatRoomMain.id, (route) => false);
-                        } catch (e) {
-                          flutterToast("Something went wrong");
-                        }
-                      }
+                      setState(() {
+                        isLoading = !isLoading;
+                      });
                     },
                   ),
                   SizedBox(height: size.height * 0.05),
@@ -134,6 +153,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
               ),
             ),
           ),
+          LoadingIndicator(isLoading: isLoading)
         ],
       ),
     );

@@ -25,26 +25,29 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'K-On-Net Auth',
       theme: ThemeData(
-        textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
-            .apply(bodyColor: Colors.black),
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: Colors.white.withOpacity(0.98),
-      ),
+          textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
+              .apply(bodyColor: Colors.black),
+          primaryColor: kPrimaryColor,
+          scaffoldBackgroundColor: Colors.white.withOpacity(0.98),
+          popupMenuTheme: PopupMenuThemeData(color: Colors.white)),
       darkTheme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: kContentColorLightTheme,
           hintColor: kContentColorLightTheme.withOpacity(0.3),
+          popupMenuTheme: PopupMenuThemeData(
+              color: kContentColorLightTheme.withOpacity(0.9)),
           textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
               .apply(bodyColor: kContentColorDarkTheme)),
       home: SharedPreferencesHelper.isLoggedIn()
           ? SharedPreferencesHelper.isDetailsFilled()
               ? ChatRoomMain()
-              : UserDetailsScreen()
+              : UserDetailsScreen(null, null)
           : WelcomeScreen(),
+      // home: UserDetailsScreen(null, null),
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ChatRoomMain.id: (context) => ChatRoomMain(),
         RegisterScreen.id: (context) => RegisterScreen(),
-        UserDetailsScreen.id: (context) => UserDetailsScreen(),
+        UserDetailsScreen.id: (context) => UserDetailsScreen(null, null),
         MessageScreen.id: (context) => MessageScreen(null),
       },
     );

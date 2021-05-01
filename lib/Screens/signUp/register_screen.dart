@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:k_on_net/components/loadingIndicator.dart';
 import 'package:k_on_net/components/rounded_button.dart';
 import 'package:k_on_net/components/rounded_input_field.dart';
 import 'package:k_on_net/constants.dart';
@@ -26,6 +27,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   _verifyOtp(String pin) async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       FirebaseAuth auth = FirebaseAuth.instance;
       await auth
           .signInWithCredential(PhoneAuthProvider.credential(
@@ -33,15 +37,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
           .then((value) async {
         if (value.user != null) {
           SharedPreferencesHelper.loginSuccessful();
-          SharedPreferencesHelper.setCurrentLoginData(
-              tecPhone.text, auth.currentUser.uid);
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => UserDetailsScreen()),
+              MaterialPageRoute(
+                  builder: (context) =>
+                      UserDetailsScreen(tecPhone.text, auth.currentUser.uid)),
               (route) => false);
         }
       });
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       flutterToast('Wrong OTP');
     }
   }
@@ -54,24 +61,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
               .signInWithCredential(credential)
               .then((value) async {
             if (value.user != null) {
+              FirebaseAuth auth = FirebaseAuth.instance;
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => UserDetailsScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => UserDetailsScreen(
+                          tecPhone.text, auth.currentUser.uid)),
                   (route) => false);
             }
           });
         },
         verificationFailed: (FirebaseAuthException e) {
-          print(e.message);
+          setState(() {
+            isLoading = false;
+          });
+          flutterToast(e.message);
         },
         codeSent: (String verificationID, int resendToken) {
           setState(() {
             _verificationCode = verificationID;
             otpSent = true;
+            isLoading = false;
           });
         },
         codeAutoRetrievalTimeout: (String verificationID) {
           setState(() {
+            isLoading = false;
             _verificationCode = verificationID;
           });
         },
@@ -81,72 +96,73 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return isLoading
-        ? Container(
-            alignment: Alignment.center,
-            child: CircularProgressIndicator(),
-          )
-        : Scaffold(
-            body: SafeArea(
-              child: Background(
-                child: SingleChildScrollView(
+    return Scaffold(
+      body: SafeArea(
+        child: Background(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: size.height * 0.03),
+                SvgPicture.asset(
+                  'assets/icons/signup.svg',
+                  height: size.height * 0.35,
+                ),
+                Form(
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(height: size.height * 0.03),
-                      SvgPicture.asset(
-                        'assets/icons/signup.svg',
-                        height: size.height * 0.35,
+                      RoundedInputField(
+                        hintText: 'Phone',
+                        textInputType: TextInputType.phone,
+                        onChanged: (value) {},
+                        controller: tecPhone,
+                        maxLength: 10,
                       ),
-                      Form(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            RoundedInputField(
-                              hintText: 'Phone',
-                              textInputType: TextInputType.phone,
-                              onChanged: (value) {},
-                              controller: tecPhone,
-                              maxLength: 10,
-                            ),
-                            SizedBox(height: size.height * 0.03),
-                            RoundedInputField(
-                              onChanged: (value) {},
-                              obscureText: true,
-                              // typing becomes hidden
-                              hintText: 'OTP',
-                              textInputType: TextInputType.number,
-                              controller: tecOtp,
-                              icon: Icons.lock,
-                              maxLength: 6,
-                            ),
-                          ],
-                        ),
+                      LoadingIndicator(isLoading: isLoading),
+                      SizedBox(height: size.height * 0.015),
+                      RoundedInputField(
+                        onChanged: (value) {},
+                        obscureText: true,
+                        hintText: 'OTP',
+                        textInputType: TextInputType.number,
+                        controller: tecOtp,
+                        icon: Icons.lock,
+                        maxLength: 6,
                       ),
-                      Hero(
-                        tag: 'button',
-                        child: RoundedButton(
-                            text: otpSent ? 'Verify' : 'Send OTP',
-                            color: kPrimaryColor,
-                            textColor: Colors.white,
-                            press: () {
-                              if (otpSent) {
-                                if (tecOtp.text.length == 6)
-                                  _verifyOtp(tecOtp.text);
-                                else {
-                                  flutterToast("Enter a valid OTP");
-                                }
-                              } else if (tecPhone.text.length == 10)
-                                _sendOtp(tecPhone.text);
-                              else
-                                flutterToast("Enter a valid Phone number");
-                            }),
-                      ),
-                      SizedBox(height: size.height * 0.03),
                     ],
                   ),
                 ),
-              ),
+                Hero(
+                  tag: 'button',
+                  child: RoundedButton(
+                      text: otpSent ? 'Verify' : 'Send OTP',
+                      color: kPrimaryColor,
+                      textColor: Colors.white,
+                      press: () {
+                        if (otpSent) {
+                          if (tecOtp.text.length == 6) {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            _verifyOtp(tecOtp.text);
+                          } else {
+                            flutterToast("Enter a valid OTP");
+                          }
+                        } else if (tecPhone.text.length == 10) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          _sendOtp(tecPhone.text);
+                        } else
+                          flutterToast("Enter a valid Phone number");
+                      }),
+                ),
+                SizedBox(height: size.height * 0.03),
+              ],
             ),
-          );
+          ),
+        ),
+      ),
+    );
   }
 }
