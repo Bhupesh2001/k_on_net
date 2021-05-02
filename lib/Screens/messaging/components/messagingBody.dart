@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:k_on_net/Screens/messaging/components/message.dart';
 import 'package:k_on_net/components/loadingIndicator.dart';
 import 'package:k_on_net/services/Firestore.dart';
 import 'chat_input_field.dart';
@@ -39,7 +40,7 @@ class _MessagingBodyState extends State<MessagingBody> {
                   child: ListView.builder(
                     controller: scrollController,
                     itemBuilder: (listContext, index) =>
-                        buildItem(snapshot.data.docs[index]),
+                        Message(snapshot.data.docs[index]),
                     itemCount: snapshot.data.docs.length,
                     // reverse: true,
                   ),
@@ -58,27 +59,6 @@ class _MessagingBodyState extends State<MessagingBody> {
             );
           }
         },
-      ),
-    );
-  }
-
-  buildItem(doc) {
-    return Padding(
-      padding: EdgeInsets.only(
-          top: 8.0,
-          left: ((doc['senderId'] == userID) ? 64 : 0),
-          right: ((doc['senderId'] == userID) ? 0 : 64)),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-            color: ((doc['senderId'] == userID)
-                ? Colors.grey
-                : Colors.greenAccent),
-            borderRadius: BorderRadius.circular(8.0)),
-        child: (doc['type'] == 'text')
-            ? Text('${doc['content']}')
-            : Image.network(doc['content']),
       ),
     );
   }

@@ -142,11 +142,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                   ),
                   RoundedButton(
                     text: 'Finish',
-                    press: () {
-                      setState(() {
-                        isLoading = !isLoading;
-                      });
-                    },
+                    press: onClick,
                   ),
                   SizedBox(height: size.height * 0.05),
                 ],

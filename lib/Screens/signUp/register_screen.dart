@@ -37,6 +37,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           .then((value) async {
         if (value.user != null) {
           SharedPreferencesHelper.loginSuccessful();
+          //TODO
+          SharedPreferencesHelper.setCurrentLoginData(
+              tecPhone.text, auth.currentUser.uid);
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
@@ -111,17 +114,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      RoundedInputField(
-                        hintText: 'Phone',
-                        textInputType: TextInputType.phone,
-                        onChanged: (value) {},
-                        controller: tecPhone,
-                        maxLength: 10,
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          RoundedInputField(
+                            hintText: 'Phone',
+                            textInputType: TextInputType.phone,
+                            controller: tecPhone,
+                            maxLength: 10,
+                          ),
+                          Positioned(
+                            right: 20,
+                            child: LoadingIndicator(
+                              isLoading: true,
+                              radius: 15,
+                            ),
+                          ),
+                        ],
                       ),
-                      LoadingIndicator(isLoading: isLoading),
                       SizedBox(height: size.height * 0.015),
                       RoundedInputField(
-                        onChanged: (value) {},
                         obscureText: true,
                         hintText: 'OTP',
                         textInputType: TextInputType.number,

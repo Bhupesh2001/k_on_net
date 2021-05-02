@@ -18,7 +18,6 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // FirebaseUser user;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,18 +30,21 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white.withOpacity(0.98),
           popupMenuTheme: PopupMenuThemeData(color: Colors.white)),
       darkTheme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: kContentColorLightTheme,
-          hintColor: kContentColorLightTheme.withOpacity(0.3),
-          popupMenuTheme: PopupMenuThemeData(
-              color: kContentColorLightTheme.withOpacity(0.9)),
-          textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
-              .apply(bodyColor: kContentColorDarkTheme)),
+        scaffoldBackgroundColor: kContentColorLightTheme,
+        hintColor: kContentColorLightTheme.withOpacity(0.3),
+        popupMenuTheme: PopupMenuThemeData(
+          color: kContentColorLightTheme.withOpacity(0.9),
+        ),
+        textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
+            .apply(bodyColor: kContentColorDarkTheme),
+      ),
+
       home: SharedPreferencesHelper.isLoggedIn()
           ? SharedPreferencesHelper.isDetailsFilled()
               ? ChatRoomMain()
               : UserDetailsScreen(null, null)
           : WelcomeScreen(),
-      // home: UserDetailsScreen(null, null),
+      // home: RegisterScreen(),
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ChatRoomMain.id: (context) => ChatRoomMain(),
@@ -53,3 +55,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+//scroll
+// login error

@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:k_on_net/Screens/chatRoom/components/chat_card.dart';
-import 'package:k_on_net/Screens/messaging/messageScreen.dart';
 import 'package:k_on_net/components/loadingIndicator.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
 
@@ -12,12 +10,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  @override
-  void initState() {
-    Firebase.initializeApp();
-    super.initState();
-  }
-
   String userId = SharedPreferencesHelper.myUid();
 
   @override
@@ -40,29 +32,5 @@ class _ChatScreenState extends State<ChatScreen> {
         },
       ),
     );
-  }
-
-  buildItem(doc) {
-    // ToDO print uid
-    return (userId != doc['id'])
-        ? GestureDetector(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MessageScreen(doc)));
-            },
-            child: Card(
-              color: Colors.lightBlue,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  child: Center(
-                    child: Text(doc['name']),
-                    // child: Text(doc['name']),
-                  ),
-                ),
-              ),
-            ),
-          )
-        : Container(color: Colors.green);
   }
 }

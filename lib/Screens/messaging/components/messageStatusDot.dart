@@ -1,15 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:k_on_net/constants.dart';
 import 'package:k_on_net/model/chat_message.dart';
 
 class MessageStatusDot extends StatelessWidget {
-  final MessageStatus status;
+  final DocumentSnapshot doc;
 
-  const MessageStatusDot({Key key, this.status}) : super(key: key);
+  const MessageStatusDot({Key key, this.doc}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    Color dotColor(MessageStatus status) {
-      switch (status) {
+    Color dotColor(DocumentSnapshot doc) {
+      switch (doc['']) {
         case MessageStatus.not_sent:
           return Colors.transparent;
           break;
@@ -27,8 +28,8 @@ class MessageStatusDot extends StatelessWidget {
       }
     }
 
-    IconData statusIcon(MessageStatus status) {
-      switch (status) {
+    IconData statusIcon(DocumentSnapshot doc) {
+      switch (doc['']) {
         case MessageStatus.viewed:
           return Icons.done;
           break;
@@ -47,10 +48,10 @@ class MessageStatusDot extends StatelessWidget {
       width: 12,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: dotColor(status),
+        color: dotColor(doc),
       ),
       child: Icon(
-        statusIcon(status),
+        statusIcon(doc),
         size: 8,
         color: Colors.white,
       ),

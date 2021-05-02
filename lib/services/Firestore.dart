@@ -28,13 +28,7 @@ class FireStoreHelper {
 
     if (await users.snapshots().length == 0) {
       print("IF");
-      users.add({
-        // "senderId": '',
-        // "anotherUserId": '',
-        // "timestamp": DateTime.now().millisecondsSinceEpoch.toString(),
-        // 'content': 'msg',
-        // "type": 'text',
-      });
+      users.add({});
     }
   }
 }

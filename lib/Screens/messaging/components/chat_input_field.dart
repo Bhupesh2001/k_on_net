@@ -9,47 +9,16 @@ class ChatInputField extends StatelessWidget {
 
   const ChatInputField(this.doc, this.groupChatId);
 
-  sendMsg(String msg) {
-    print("sendMsgStarted");
-
-    /// Upload images to firebase and returns a URL
-    if (msg.length > 0) {
-      print('this is called $msg');
-      var ref = FirebaseFirestore.instance
-          .collection('messages')
-          .doc(groupChatId)
-          .collection(groupChatId)
-          .doc(DateTime.now().millisecondsSinceEpoch.toString());
-
-      FirebaseFirestore.instance.runTransaction((transaction) async {
-        transaction.set(ref, {
-          "senderId": SharedPreferencesHelper.myUid(),
-          "anotherUserId": doc['id'],
-          "timestamp": DateTime.now().millisecondsSinceEpoch.toString(),
-          'content': msg,
-          "type": 'text',
-        });
-      });
-
-      // scrollController.animateTo(0.0,
-      //     duration: Duration(milliseconds: 100), curve: Curves.bounceInOut);
-    } else {
-      print('Please enter some text to send');
-    }
-  }
-
   sendText(String msg) {
     CollectionReference users = FirebaseFirestore.instance
         .collection('Messages')
         .doc(groupChatId)
         .collection(groupChatId);
 
-    print(groupChatId);
-
     users.add({
       "senderId": SharedPreferencesHelper.myUid(),
       "anotherUserId": doc['id'],
-      "timestamp": DateTime.now().millisecondsSinceEpoch.toString(),
+      "timestamp": DateTime.now(),
       'content': msg,
       "type": 'text',
     });
@@ -129,9 +98,10 @@ class ChatInputField extends StatelessWidget {
             SizedBox(width: 10),
             InkWell(
               onTap: () {
-                if (tecMessage.text.trim().isNotEmpty)
+                if (tecMessage.text.trim().isNotEmpty) {
                   sendText(tecMessage.text);
-                tecMessage.clear();
+                  tecMessage.clear();
+                }
                 if (!FocusScope.of(context).hasPrimaryFocus)
                   FocusScope.of(context).unfocus();
               },
