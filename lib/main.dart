@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:k_on_net/Screens/Welcome/welcome_screen.dart';
@@ -17,7 +19,48 @@ Future main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void dispose() {
+    WidgetsBinding.instance.addObserver(this);
+    print("Stop");
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("the state of app : $state");
+
+    if (state == AppLifecycleState.resumed) {
+      FirebaseFirestore.instance
+          .collection('Users')
+          .doc(SharedPreferencesHelper.myUid())
+          .update({"isOnline": true}).then((_) {
+        print("success resumed");
+      });
+    } else {
+      FirebaseFirestore.instance
+          .collection('Users')
+          .doc(SharedPreferencesHelper.myUid())
+          .update({
+        "isOnline": false,
+      }).then((_) {
+        print("success Paused");
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,4 +100,5 @@ class MyApp extends StatelessWidget {
 }
 
 //scroll
+// ticks
 // login error

@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:k_on_net/Screens/chatRoom/chatScreen.dart';
 import 'package:k_on_net/Screens/chatRoom/components/searchData.dart';
 import 'package:k_on_net/constants.dart';
+import 'package:k_on_net/utility/shared_Preferences.dart';
 import 'components/popupMenu.dart';
 
 class ChatRoomMain extends StatefulWidget {
@@ -15,6 +17,16 @@ class ChatRoomMain extends StatefulWidget {
 
 class _ChatRoomMainState extends State<ChatRoomMain> {
   int _selectedIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(SharedPreferencesHelper.myUid())
+        .update({"isOnline": true}).then((_) {
+      print("success!");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

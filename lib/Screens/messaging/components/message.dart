@@ -25,6 +25,7 @@ class Message extends StatelessWidget {
             mainAxisAlignment:
                 isSender() ? MainAxisAlignment.end : MainAxisAlignment.start,
             children: [
+              SizedBox(width: 10),
               if (!isSender()) ProfileImage(edgeLength: 23),
               SizedBox(width: 10),
               messageContent(doc),
@@ -42,7 +43,7 @@ class Message extends StatelessWidget {
                     .format(
                         DateTime.tryParse(doc['timestamp'].toDate().toString()))
                     .toString(),
-                style: TextStyle(fontSize: 9),
+                style: TextStyle(fontSize: 7),
               ),
             ),
           )
