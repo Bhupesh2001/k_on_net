@@ -13,25 +13,6 @@ class RoundedButton extends StatelessWidget {
     this.textColor = Colors.white,
   }) : super(key: key);
 
-  //   return Container(
-  //   margin: EdgeInsets.symmetric(vertical: 10),
-  //   width: size.width * 0.8,
-  //   child: ClipRRect(
-  //     borderRadius: BorderRadius.circular(29),
-  //     child: FlatButton(
-  //       color: color,
-  //       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-  //       onPressed: press,
-  //       child: Text(
-  //         text,
-  //         style: TextStyle(
-  //           color: textColor,
-  //         ),
-  //       ),
-  //     ),
-  //   ),
-  // );
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -55,26 +36,3 @@ class RoundedButton extends StatelessWidget {
     );
   }
 }
-// void x(Size size) {
-//   GestureDetector(
-//     onTap: press,
-//     child: ClipRRect(
-//       borderRadius: BorderRadius.circular(29),
-//       child: Container(
-//         height: size.height * 0.0589,
-//         width: size.width * 0.8,
-//         color: kPrimaryColor,
-//         child: Padding(
-//           padding: const EdgeInsets.symmetric(vertical: 12.0),
-//           child: Center(
-//             child: Text(
-//               text,
-//               style:
-//                   TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-//             ),
-//           ),
-//         ),
-//       ),
-//     ),
-//   );
-// }

@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:k_on_net/Screens/components/profileImage.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
 import '../../../constants.dart';
 
 AppBar messagingAppBar({BuildContext context, doc}) {
@@ -12,25 +13,20 @@ AppBar messagingAppBar({BuildContext context, doc}) {
             : kPrimaryColor,
     title: InkWell(
       onTap: () {},
-      child: Row(
-        children: [
-          ProfileImage(),
-          SizedBox(width: size.width * 0.02),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                doc['name'],
-                style: TextStyle(fontSize: 16),
-              ),
-              Text(
-                doc['isOnline'] ? 'Online' : doc['lastSeen'],
-                style: TextStyle(fontSize: 12),
-              ),
-            ],
-          ),
-        ],
-      ),
+      child: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('Users')
+              .doc(doc['id'])
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData)
+              return AppBarDetails(
+                size: size,
+                userDoc: null,
+              );
+            var userDoc = snapshot.data;
+            return AppBarDetails(size: size, userDoc: userDoc);
+          }),
     ),
     actions: [
       IconButton(icon: Icon(Icons.phone), onPressed: () {}),
@@ -38,4 +34,43 @@ AppBar messagingAppBar({BuildContext context, doc}) {
       SizedBox(width: size.width * 0.04),
     ],
   );
+}
+
+class AppBarDetails extends StatelessWidget {
+  const AppBarDetails({
+    Key key,
+    @required this.size,
+    @required this.userDoc,
+  }) : super(key: key);
+
+  final Size size;
+  final userDoc;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        ProfileImage(),
+        SizedBox(width: size.width * 0.02),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              userDoc["name"],
+              style: TextStyle(fontSize: 16),
+            ),
+            Text(
+              userDoc['isOnline']
+                  ? 'Online'
+                  : timeago
+                      .format(DateTime.tryParse(
+                          userDoc['lastOnline'].toDate().toString()))
+                      .toString(),
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }

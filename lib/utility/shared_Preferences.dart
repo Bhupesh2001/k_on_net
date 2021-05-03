@@ -18,11 +18,15 @@ class SharedPreferencesHelper {
     return false;
   }
 
-  static loginSuccessful() async => spObject.setBool('isLoggedIn', true);
+  static loginSuccessful() async => await spObject.setBool('isLoggedIn', true);
 
   static void setCurrentLoginData(String phone, String uid) async {
     await spObject.setString('currentUserPhone', phone);
     await spObject.setString('myUid', uid);
+    print("isLogin = " + spObject.getBool('isLoggedIn').toString());
+    print("currentUserPhone = " +
+        spObject.getBool('currentUserPhone').toString());
+    print("myUid = " + spObject.getBool('myUid').toString());
   }
 
   static void setCurrentProfileData(String name, String team) async {

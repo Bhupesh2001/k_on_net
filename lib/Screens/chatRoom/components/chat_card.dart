@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:k_on_net/Screens/components/profileImage.dart';
 import 'package:k_on_net/Screens/messaging/messageScreen.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ChatCard extends StatelessWidget {
   final doc;
@@ -61,13 +62,12 @@ class ChatCard extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w500),
                           ),
-                          SizedBox(
-                            height: size.width * 0.012,
-                          ),
+                          SizedBox(height: size.width * 0.012),
                           Opacity(
                             opacity: 0.64,
                             child: Text(
-                              doc['content'],
+                              "bye",
+                              // doc['content'],
                               style: TextStyle(fontSize: 15),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -77,7 +77,14 @@ class ChatCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Opacity(opacity: 0.64, child: Text(doc['lastMessageTime'])),
+                  // Opacity(opacity: 0.64, child: Text(doc['lastMessageTime'])),
+                  if (!(doc['isOnline']))
+                    Opacity(
+                        opacity: 0.64,
+                        child: Text(timeago
+                            .format(DateTime.tryParse(
+                                doc['lastOnline'].toDate().toString()))
+                            .toString())),
                 ],
               ),
             ),

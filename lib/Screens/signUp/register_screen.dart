@@ -6,7 +6,6 @@ import 'package:k_on_net/components/rounded_button.dart';
 import 'package:k_on_net/components/rounded_input_field.dart';
 import 'package:k_on_net/constants.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
-
 import 'background.dart';
 import 'userDetailScreen.dart';
 
@@ -37,7 +36,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           .then((value) async {
         if (value.user != null) {
           SharedPreferencesHelper.loginSuccessful();
-          //TODO
           SharedPreferencesHelper.setCurrentLoginData(
               tecPhone.text, auth.currentUser.uid);
           Navigator.pushAndRemoveUntil(
@@ -126,7 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Positioned(
                             right: 20,
                             child: LoadingIndicator(
-                              isLoading: true,
+                              isLoading: isLoading,
                               radius: 15,
                             ),
                           ),

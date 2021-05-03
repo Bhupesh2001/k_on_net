@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:k_on_net/Screens/Welcome/welcome_screen.dart';
@@ -11,6 +12,12 @@ class PopupMenu extends StatelessWidget {
     void _signOut() async {
       FirebaseAuth.instance.signOut();
       SharedPreferencesHelper.signOut();
+      FirebaseFirestore.instance
+          .collection("Users")
+          .doc(SharedPreferencesHelper.myUid())
+          .update({"isOnline": false}).then((_) {
+        print("success!");
+      });
       Navigator.pushNamedAndRemoveUntil(
           context, WelcomeScreen.id, (route) => false);
     }

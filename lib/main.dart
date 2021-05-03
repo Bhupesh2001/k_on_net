@@ -53,9 +53,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       FirebaseFirestore.instance
           .collection('Users')
           .doc(SharedPreferencesHelper.myUid())
-          .update({
-        "isOnline": false,
-      }).then((_) {
+          .update({"isOnline": false, 'lastOnline': DateTime.now()}).then((_) {
         print("success Paused");
       });
     }
@@ -66,6 +64,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'K-On-Net Auth',
+      themeMode: SharedPreferencesHelper.spObject.getBool('lightTheme') ?? false
+          ? ThemeMode.light
+          : ThemeMode.dark,
       theme: ThemeData(
           textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
               .apply(bodyColor: Colors.black),
@@ -83,9 +84,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       ),
 
       home: SharedPreferencesHelper.isLoggedIn()
-          ? SharedPreferencesHelper.isDetailsFilled()
-              ? ChatRoomMain()
-              : UserDetailsScreen(null, null)
+          ? ChatRoomMain()
           : WelcomeScreen(),
       // home: RegisterScreen(),
       routes: {

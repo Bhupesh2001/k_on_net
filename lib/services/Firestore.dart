@@ -2,33 +2,67 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
 
 class FireStoreHelper {
-  static String _groupChatId;
+  static String groupChatId;
 
   static String getGroupChatId(DocumentSnapshot docs) {
-    print("getGroupChatIdStarted");
     String userID = SharedPreferencesHelper.myUid();
     String anotherUserId = docs['id'];
 
     if (userID.compareTo(anotherUserId) > 0)
-      _groupChatId = '$userID - $anotherUserId';
+      groupChatId = '$userID - $anotherUserId';
     else
-      _groupChatId = '$anotherUserId - $userID';
+      groupChatId = '$anotherUserId - $userID';
 
-    return _groupChatId;
+    return groupChatId;
+  }
+
+  static void lastSeenOnlineUpdate(DocumentSnapshot doc) async {
+    FirebaseFirestore.instance
+        .collection("Messages")
+        .doc(FireStoreHelper.getGroupChatId(doc))
+        .set({
+      "LastSeen_" + SharedPreferencesHelper.myUid(): DateTime.now(),
+    }).then((_) {});
   }
 
   static Future<void> createRoom(DocumentSnapshot docs) async {
     getGroupChatId(docs);
     CollectionReference users = FirebaseFirestore.instance
         .collection('Messages')
-        .doc(_groupChatId)
-        .collection(_groupChatId);
-
-    print(_groupChatId);
+        .doc(groupChatId)
+        .collection(groupChatId);
 
     if (await users.snapshots().length == 0) {
-      print("IF");
       users.add({});
     }
+  }
+
+  static Future<void> userSetup(
+      {String displayName, String teamName, String uid, String phone}) async {
+    final result = (await FirebaseFirestore.instance
+            .collection('users')
+            .where('id', isEqualTo: uid)
+            .get())
+        .docs;
+
+    if (result.length == 0) {
+      FirebaseFirestore.instance.collection('Users').doc(uid).set({
+        'name': displayName,
+        'id': uid,
+        'teamName': teamName,
+        'isOnline': true,
+        'lastOnline': '',
+        'lastMessageTime': '',
+        'profile_pic': ''
+      });
+    }
+    SharedPreferencesHelper.setCurrentLoginData(phone, uid);
+    SharedPreferencesHelper.setCurrentProfileData(displayName, teamName);
+    SharedPreferencesHelper.spObject.setBool('detailsFilled', true);
+    return;
+  }
+
+  static Stream<QuerySnapshot> get user {
+    return FirebaseFirestore.instance.collection("Users").snapshots();
   }
 }
