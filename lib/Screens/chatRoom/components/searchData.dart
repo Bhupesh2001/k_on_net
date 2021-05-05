@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
-import 'package:k_on_net/Screens/components/profileImage.dart';
+import 'package:k_on_net/components/profileImage.dart';
 import 'package:k_on_net/Screens/messaging/messageScreen.dart';
 import 'package:k_on_net/constants.dart';
 import 'package:k_on_net/model/Chat.dart';

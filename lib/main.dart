@@ -1,21 +1,27 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 import 'package:k_on_net/Screens/Welcome/welcome_screen.dart';
 import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
 import 'package:k_on_net/Screens/messaging/messageScreen.dart';
 import 'package:k_on_net/Screens/signUp/register_screen.dart';
 import 'package:k_on_net/Screens/signUp/userDetailScreen.dart';
-import 'package:k_on_net/constants.dart';
+import 'package:k_on_net/themeData.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'constants.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SharedPreferencesHelper.spObject = await SharedPreferences.getInstance();
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: kPrimaryColor) // status bar color
+      );
   runApp(MyApp());
 }
 
@@ -63,30 +69,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'K-On-Net Auth',
-      themeMode: SharedPreferencesHelper.spObject.getBool('lightTheme') ?? false
-          ? ThemeMode.light
-          : ThemeMode.dark,
-      theme: ThemeData(
-          textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
-              .apply(bodyColor: Colors.black),
-          primaryColor: kPrimaryColor,
-          scaffoldBackgroundColor: Colors.white.withOpacity(0.98),
-          popupMenuTheme: PopupMenuThemeData(color: Colors.white)),
-      darkTheme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: kContentColorLightTheme,
-        hintColor: kContentColorLightTheme.withOpacity(0.3),
-        popupMenuTheme: PopupMenuThemeData(
-          color: kContentColorLightTheme.withOpacity(0.9),
-        ),
-        textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
-            .apply(bodyColor: kContentColorDarkTheme),
-      ),
-
-      home: SharedPreferencesHelper.isLoggedIn()
-          ? ChatRoomMain()
-          : WelcomeScreen(),
-      // home: RegisterScreen(),
+      title: 'K-On-Net',
+      theme: lightTheme(context),
+      darkTheme: darkTheme(context),
+      // home: SharedPreferencesHelper.isLoggedIn()
+      //     ? ChatRoomMain()
+      //     : WelcomeScreen(),
+      home: ChatRoomMain(),
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ChatRoomMain.id: (context) => ChatRoomMain(),

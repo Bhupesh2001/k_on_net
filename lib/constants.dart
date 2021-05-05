@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:k_on_net/Screens/chatRoom/chatScreen.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 const kPrimaryColor = Color(0xFF6f35a5);
 const kSecondaryColor = Color(0xFFf1e6ff);
@@ -31,6 +33,15 @@ flutterToast(String message) => Fluttertoast.showToast(
     toastLength: Toast.LENGTH_SHORT,
     gravity: ToastGravity.CENTER,
     timeInSecForIosWeb: 1,
-    backgroundColor: Colors.grey,
+    backgroundColor: kSecondaryColor,
     textColor: Colors.white,
     fontSize: 16.0);
+
+String timeInHourMinFormat(Timestamp time) =>
+    (time.toDate().hour % 12).toString() +
+    ":" +
+    time.toDate().minute.toString() +
+    (time.toDate().hour % 12 == time.toDate().hour ? ' am' : ' pm');
+
+String timeInAgoFormat(Timestamp time) =>
+    timeago.format(DateTime.tryParse(time.toDate().toString())).toString();

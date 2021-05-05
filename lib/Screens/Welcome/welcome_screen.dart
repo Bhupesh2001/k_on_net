@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:k_on_net/Screens/components/background.dart';
+import 'package:k_on_net/Screens/Welcome/background.dart';
 import 'package:k_on_net/Screens/signUp/register_screen.dart';
 import 'package:k_on_net/components/rounded_button.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';

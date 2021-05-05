@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:k_on_net/Screens/components/profileImage.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:k_on_net/components/profileImage.dart';
+import 'package:k_on_net/constants.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
+import 'messageStatusDot.dart';
 import 'types_of_messages/audioMessage.dart';
 import 'types_of_messages/text_message.dart';
 import 'types_of_messages/videoMessage.dart';
@@ -29,7 +30,7 @@ class Message extends StatelessWidget {
               if (!isSender()) ProfileImage(edgeLength: 23),
               SizedBox(width: 10),
               messageContent(doc),
-              // if (isSender()) MessageStatusDot(status: message.messageStatus),
+              if (isSender()) MessageStatusDot(doc: doc),
             ],
           ),
           Padding(
@@ -39,11 +40,9 @@ class Message extends StatelessWidget {
             child: Opacity(
               opacity: 0.5,
               child: Text(
-                timeago
-                    .format(
-                        DateTime.tryParse(doc['timestamp'].toDate().toString()))
-                    .toString(),
-                style: TextStyle(fontSize: 7),
+                // timeInHourMinFormat(doc['sendTime']),
+                timeInAgoFormat(doc['sendTime']),
+                style: TextStyle(fontSize: 10, wordSpacing: 2),
               ),
             ),
           )

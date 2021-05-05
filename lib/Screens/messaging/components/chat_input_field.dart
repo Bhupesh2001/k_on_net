@@ -9,19 +9,22 @@ class ChatInputField extends StatelessWidget {
 
   const ChatInputField(this.doc, this.groupChatId);
 
-  sendText(String msg) {
+  sendText(String msg) async {
     CollectionReference users = FirebaseFirestore.instance
         .collection('Messages')
         .doc(groupChatId)
         .collection(groupChatId);
 
-    users.add({
+    DocumentReference messageId = await users.add({
       "senderId": SharedPreferencesHelper.myUid(),
       "anotherUserId": doc['id'],
-      "timestamp": DateTime.now(),
+      "sendTime": DateTime.now(),
       'content': msg,
       "type": 'text',
+      "seenTime": null,
     });
+
+    messageId.update({"MessageId": messageId});
   }
 
   @override

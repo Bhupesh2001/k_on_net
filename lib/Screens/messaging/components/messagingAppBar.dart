@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:k_on_net/Screens/components/profileImage.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:k_on_net/components/profileImage.dart';
 import '../../../constants.dart';
 
 AppBar messagingAppBar({BuildContext context, doc}) {
@@ -20,10 +19,7 @@ AppBar messagingAppBar({BuildContext context, doc}) {
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData)
-              return AppBarDetails(
-                size: size,
-                userDoc: null,
-              );
+              return AppBarDetails(size: size, userDoc: doc);
             var userDoc = snapshot.data;
             return AppBarDetails(size: size, userDoc: userDoc);
           }),
@@ -55,17 +51,11 @@ class AppBarDetails extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(userDoc["name"] ?? '', style: TextStyle(fontSize: 16)),
             Text(
-              userDoc["name"],
-              style: TextStyle(fontSize: 16),
-            ),
-            Text(
-              userDoc['isOnline']
+              userDoc['isOnline'] ?? false
                   ? 'Online'
-                  : timeago
-                      .format(DateTime.tryParse(
-                          userDoc['lastOnline'].toDate().toString()))
-                      .toString(),
+                  : timeInAgoFormat(userDoc['lastOnline']),
               style: TextStyle(fontSize: 12),
             ),
           ],

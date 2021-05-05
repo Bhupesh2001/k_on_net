@@ -30,7 +30,7 @@ class _MessagingBodyState extends State<MessagingBody> {
             .collection('Messages')
             .doc(groupChatId)
             .collection(groupChatId)
-            .orderBy('timestamp', descending: false)
+            .orderBy('sendTime', descending: false)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData && snapshot.data != null) {

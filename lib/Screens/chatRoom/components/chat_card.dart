@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:k_on_net/Screens/components/profileImage.dart';
+import 'package:k_on_net/components/profileImage.dart';
 import 'package:k_on_net/Screens/messaging/messageScreen.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
