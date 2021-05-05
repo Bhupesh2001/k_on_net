@@ -19,7 +19,7 @@ AppBar messagingAppBar({BuildContext context, doc}) {
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData)
-              return AppBarDetails(size: size, userDoc: doc);
+              return Container(color: Theme.of(context).appBarTheme.color);
             var userDoc = snapshot.data;
             return AppBarDetails(size: size, userDoc: userDoc);
           }),
@@ -44,6 +44,8 @@ class AppBarDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isOnline = userDoc['isOnline'] ?? false;
+    bool isTyping = userDoc['isTyping'] ?? false;
     return Row(
       children: [
         ProfileImage(),
@@ -53,9 +55,11 @@ class AppBarDetails extends StatelessWidget {
           children: [
             Text(userDoc["name"] ?? '', style: TextStyle(fontSize: 16)),
             Text(
-              userDoc['isOnline'] ?? false
-                  ? 'Online'
-                  : timeInAgoFormat(userDoc['lastOnline']),
+              isTyping
+                  ? 'Typing'
+                  : isOnline
+                      ? 'Online'
+                      : timeInAgoFormat(userDoc['lastOnline']),
               style: TextStyle(fontSize: 12),
             ),
           ],

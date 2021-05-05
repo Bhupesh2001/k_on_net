@@ -27,6 +27,16 @@ class ChatInputField extends StatelessWidget {
     messageId.update({"MessageId": messageId});
   }
 
+  void typing(String value) async {
+    DocumentReference myPath = FirebaseFirestore.instance
+        .collection("Users")
+        .doc(SharedPreferencesHelper.myUid());
+
+    myPath.update({"isTyping": true}).then((value) async =>
+        await Future.delayed(Duration(seconds: 2))
+            .then((value) => myPath.update({"isTyping": false})));
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController tecMessage = new TextEditingController();
@@ -62,7 +72,7 @@ class ChatInputField extends StatelessWidget {
                     Expanded(
                       child: TextField(
                         onChanged:
-                            null, // Its is called when an alphabet is added or removed from TextField
+                            typing, // Its is called when an alphabet is added or removed from TextField
                         controller: tecMessage,
                         decoration: InputDecoration(
                           hintText: "Type message",
