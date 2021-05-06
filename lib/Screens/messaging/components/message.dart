@@ -16,6 +16,9 @@ class Message extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isSender() => doc['senderId'] == SharedPreferencesHelper.myUid();
+    if (!isSender()) {
+      doc['MessageId'].update({'received': true});
+    }
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Column(

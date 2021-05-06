@@ -45,7 +45,8 @@ class FireStoreHelper {
         'lastOnline': '',
         'lastMessageTime': '',
         'profile_pic': '',
-        'isTyping': false
+        'isTyping': false,
+        'phone': phone
       });
     }
     SharedPreferencesHelper.setCurrentLoginData(phone, uid);

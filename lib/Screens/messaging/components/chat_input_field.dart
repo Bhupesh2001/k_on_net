@@ -10,12 +10,17 @@ class ChatInputField extends StatelessWidget {
   const ChatInputField(this.doc, this.groupChatId);
 
   sendText(String msg) async {
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(SharedPreferencesHelper.myUid())
+        .update({"isTyping": false});
+
     CollectionReference users = FirebaseFirestore.instance
         .collection('Messages')
         .doc(groupChatId)
         .collection(groupChatId);
 
-    await users.add({
+    DocumentReference messageId = await users.add({
       "senderId": SharedPreferencesHelper.myUid(),
       "anotherUserId": doc['id'],
       "sendTime": DateTime.now(),
@@ -24,6 +29,7 @@ class ChatInputField extends StatelessWidget {
       "seenTime": null,
       'received': false
     });
+    messageId.update({"MessageId": messageId});
   }
 
   void typing(String value) async {
@@ -32,7 +38,7 @@ class ChatInputField extends StatelessWidget {
         .doc(SharedPreferencesHelper.myUid());
 
     myPath.update({"isTyping": true}).then((value) async =>
-        await Future.delayed(Duration(seconds: 2))
+        await Future.delayed(Duration(seconds: 4))
             .then((value) => myPath.update({"isTyping": false})));
   }
 

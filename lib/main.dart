@@ -12,21 +12,22 @@ import 'package:k_on_net/Screens/signUp/userDetailScreen.dart';
 import 'package:k_on_net/themeData.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'constants.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SharedPreferencesHelper.spObject = await SharedPreferences.getInstance();
+  bool isLoggedIn = SharedPreferencesHelper.isLoggedIn();
   SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: kPrimaryColor) // status bar color
-      );
-
-  runApp(MyApp());
+      SystemUiOverlayStyle(statusBarColor: kPrimaryColor)); // status bar color
+  runApp(MyApp(isLoggedIn: isLoggedIn));
 }
 
 class MyApp extends StatefulWidget {
+  final isLoggedIn;
+
+  const MyApp({Key key, this.isLoggedIn}) : super(key: key);
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -73,9 +74,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       title: 'K-On-Net',
       theme: lightTheme(context),
       darkTheme: darkTheme(context),
-      home: SharedPreferencesHelper.isLoggedIn()
-          ? ChatRoomMain()
-          : WelcomeScreen(),
+      // home: SharedPreferencesHelper.isLoggedIn()
+      //     ? ChatRoomMain()
+      //     : WelcomeScreen(),
+      home: widget.isLoggedIn ? ChatRoomMain() : WelcomeScreen(),
       // home: ChatRoomMain(),
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
