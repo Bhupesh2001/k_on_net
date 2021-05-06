@@ -16,15 +16,6 @@ class FireStoreHelper {
     return groupChatId;
   }
 
-  static void lastSeenOnlineUpdate(DocumentSnapshot doc) async {
-    FirebaseFirestore.instance
-        .collection("Messages")
-        .doc(FireStoreHelper.getGroupChatId(doc))
-        .set({
-      "LastSeen_" + SharedPreferencesHelper.myUid(): DateTime.now(),
-    }).then((_) {});
-  }
-
   static Future<void> createRoom(DocumentSnapshot docs) async {
     getGroupChatId(docs);
     CollectionReference users = FirebaseFirestore.instance

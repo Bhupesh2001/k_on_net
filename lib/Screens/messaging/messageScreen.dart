@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:k_on_net/services/Firestore.dart';
 import 'components/messagingAppBar.dart';
 import 'components/messagingBody.dart';
 
@@ -18,13 +17,12 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   void initState() {
     super.initState();
-    FireStoreHelper.lastSeenOnlineUpdate(widget.doc);
-    // try {
-    //   DocumentReference path = widget.doc['MessageId'];
-    //   path.update({'seenTime': DateTime.now()});
-    // } catch (e) {
-    //   print(e.toString());
-    // }
+    try {
+      DocumentReference path = widget.doc['MessageId'];
+      path.update({'received': true});
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override

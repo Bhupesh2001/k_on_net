@@ -22,6 +22,7 @@ Future main() async {
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: kPrimaryColor) // status bar color
       );
+
   runApp(MyApp());
 }
 
@@ -72,10 +73,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       title: 'K-On-Net',
       theme: lightTheme(context),
       darkTheme: darkTheme(context),
-      // home: SharedPreferencesHelper.isLoggedIn()
-      //     ? ChatRoomMain()
-      //     : WelcomeScreen(),
-      home: ChatRoomMain(),
+      home: SharedPreferencesHelper.isLoggedIn()
+          ? ChatRoomMain()
+          : WelcomeScreen(),
+      // home: ChatRoomMain(),
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ChatRoomMain.id: (context) => ChatRoomMain(),

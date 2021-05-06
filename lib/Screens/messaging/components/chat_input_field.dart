@@ -15,16 +15,15 @@ class ChatInputField extends StatelessWidget {
         .doc(groupChatId)
         .collection(groupChatId);
 
-    DocumentReference messageId = await users.add({
+    await users.add({
       "senderId": SharedPreferencesHelper.myUid(),
       "anotherUserId": doc['id'],
       "sendTime": DateTime.now(),
       'content': msg,
       "type": 'text',
       "seenTime": null,
+      'received': false
     });
-
-    messageId.update({"MessageId": messageId});
   }
 
   void typing(String value) async {
