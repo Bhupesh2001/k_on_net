@@ -35,8 +35,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               verificationId: _verificationCode, smsCode: pin))
           .then((value) async {
         if (value.user != null) {
-          SharedPreferencesHelper.loginSuccessful();
-          SharedPreferencesHelper.setCurrentLoginData(
+          SharedPrefHelper.loginSuccessful();
+          SharedPrefHelper.setCurrentLoginData(
               tecPhone.text, auth.currentUser.uid);
           Navigator.pushAndRemoveUntil(
               context,

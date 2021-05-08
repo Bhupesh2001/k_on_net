@@ -5,7 +5,7 @@ class FireStoreHelper {
   static String groupChatId;
 
   static String getGroupChatId(DocumentSnapshot docs) {
-    String userID = SharedPreferencesHelper.myUid();
+    String userID = SharedPrefHelper.myUid();
     String anotherUserId = docs['id'];
 
     if (userID.compareTo(anotherUserId) > 0)
@@ -49,9 +49,9 @@ class FireStoreHelper {
         'phone': phone
       });
     }
-    SharedPreferencesHelper.setCurrentLoginData(phone, uid);
-    SharedPreferencesHelper.setCurrentProfileData(displayName, teamName);
-    SharedPreferencesHelper.spObject.setBool('detailsFilled', true);
+    SharedPrefHelper.setCurrentLoginData(phone, uid);
+    SharedPrefHelper.setCurrentProfileData(displayName, teamName);
+    SharedPrefHelper.spObject.setBool('detailsFilled', true);
     return;
   }
 

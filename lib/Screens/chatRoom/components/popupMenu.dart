@@ -17,10 +17,10 @@ class _PopupMenuState extends State<PopupMenu> {
   Widget build(BuildContext context) {
     void _signOut() async {
       FirebaseAuth.instance.signOut();
-      SharedPreferencesHelper.signOut();
+      SharedPrefHelper.signOut();
       FirebaseFirestore.instance
           .collection("Users")
-          .doc(SharedPreferencesHelper.myUid())
+          .doc(SharedPrefHelper.myUid())
           .update({"isOnline": false}).then((_) {
         print("success!");
       });
@@ -28,8 +28,7 @@ class _PopupMenuState extends State<PopupMenu> {
           context, WelcomeScreen.id, (route) => false);
     }
 
-    bool isLightTheme =
-        SharedPreferencesHelper.spObject.getBool('lightTheme') ?? true;
+    bool isLightTheme = SharedPrefHelper.spObject.getBool('lightTheme') ?? true;
     return PopupMenuButton(onSelected: (MenuOption m) {
       Navigator.pop(context);
     }, itemBuilder: (BuildContext context) {
@@ -41,11 +40,9 @@ class _PopupMenuState extends State<PopupMenu> {
             title: Text('Theme'),
             onTap: () {
               Navigator.pop(context);
-              SharedPreferencesHelper.spObject
-                  .setBool('lightTheme', !isLightTheme);
+              SharedPrefHelper.spObject.setBool('lightTheme', !isLightTheme);
               setState(() {
-                isLightTheme =
-                    SharedPreferencesHelper.spObject.getBool('lightTheme');
+                isLightTheme = SharedPrefHelper.spObject.getBool('lightTheme');
               });
               flutterToast("Restart the app to apply changes");
             },

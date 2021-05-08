@@ -19,7 +19,7 @@ class TextMessage extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20 * 0.75, vertical: 10),
       decoration: BoxDecoration(
         color: kPrimaryColor.withOpacity(
-            doc['senderId'] == SharedPreferencesHelper.myUid()
+            doc['senderId'] == SharedPrefHelper.myUid()
                 ? (Theme.of(context).scaffoldBackgroundColor ==
                         kContentColorLightTheme
                     ? 0.5
@@ -30,7 +30,7 @@ class TextMessage extends StatelessWidget {
       child: SelectableText(
         doc['content'],
         style: TextStyle(
-            color: doc['senderId'] == SharedPreferencesHelper.myUid()
+            color: doc['senderId'] == SharedPrefHelper.myUid()
                 ? Colors.white
                 : Theme.of(context).textTheme.bodyText1.color),
       ),

@@ -15,7 +15,7 @@ class Message extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isSender() => doc['senderId'] == SharedPreferencesHelper.myUid();
+    bool isSender() => doc['senderId'] == SharedPrefHelper.myUid();
     if (!isSender()) {
       doc['MessageId'].update({'received': true});
     }

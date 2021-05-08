@@ -17,8 +17,8 @@ import 'constants.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  SharedPreferencesHelper.spObject = await SharedPreferences.getInstance();
-  bool isLoggedIn = SharedPreferencesHelper.isLoggedIn();
+  SharedPrefHelper.spObject = await SharedPreferences.getInstance();
+  bool isLoggedIn = SharedPrefHelper.isLoggedIn();
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: kPrimaryColor)); // status bar color
   runApp(MyApp(isLoggedIn: isLoggedIn));
@@ -53,14 +53,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     if (state == AppLifecycleState.resumed) {
       FirebaseFirestore.instance
           .collection('Users')
-          .doc(SharedPreferencesHelper.myUid())
+          .doc(SharedPrefHelper.myUid())
           .update({"isOnline": true}).then((_) {
         print("success resumed");
       });
     } else {
       FirebaseFirestore.instance
           .collection('Users')
-          .doc(SharedPreferencesHelper.myUid())
+          .doc(SharedPrefHelper.myUid())
           .update({"isOnline": false, 'lastOnline': DateTime.now()}).then((_) {
         print("success Paused");
       });

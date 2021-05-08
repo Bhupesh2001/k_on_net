@@ -10,7 +10,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  String userId = SharedPreferencesHelper.myUid();
+  String userId = SharedPrefHelper.myUid();
 
   @override
   Widget build(BuildContext context) {

@@ -22,7 +22,7 @@ class _ChatRoomMainState extends State<ChatRoomMain> {
     super.initState();
     FirebaseFirestore.instance
         .collection('Users')
-        .doc(SharedPreferencesHelper.myUid())
+        .doc(SharedPrefHelper.myUid())
         .update({"isOnline": true}).then((_) {});
   }
 
