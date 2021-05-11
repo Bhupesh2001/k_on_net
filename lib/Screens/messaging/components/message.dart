@@ -17,7 +17,9 @@ class Message extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isSender() => doc['senderId'] == SharedPrefHelper.myUid();
     if (!isSender()) {
-      doc['MessageId'].update({'received': true});
+      Future.delayed(Duration(milliseconds: 100), () {
+        doc['MessageId'].update({'received': true});
+      });
     }
     return Padding(
       padding: isSender()
