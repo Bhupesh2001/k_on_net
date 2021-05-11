@@ -15,22 +15,6 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
-  // AnimationController controller;
-  @override
-  void initState() {
-    super.initState();
-    //   controller = AnimationController(
-    //     vsync: this,
-    //     lowerBound: 0.35,
-    //     upperBound: 0.45,
-    //     duration: Duration(milliseconds: 800),
-    //   );
-    //   controller.forward();
-    //   controller.addListener(() {
-    //     setState(() {});
-    //   });
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

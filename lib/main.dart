@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,16 +19,20 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SharedPrefHelper.spObject = await SharedPreferences.getInstance();
-  bool isLoggedIn = SharedPrefHelper.isLoggedIn();
   SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: kPrimaryColor)); // status bar color
-  runApp(MyApp(isLoggedIn: isLoggedIn));
+      SystemUiOverlayStyle(statusBarColor: kPrimaryColor));
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  bool isLoggedIn() {
+    if (_auth.currentUser == null) return false;
+    return true;
+  } // status bar color
+
+  runApp(MyApp(isLoggedIn()));
 }
 
 class MyApp extends StatefulWidget {
-  final isLoggedIn;
-
-  const MyApp({Key key, this.isLoggedIn}) : super(key: key);
+  final bool isLoggedIn;
+  MyApp(this.isLoggedIn);
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -36,7 +41,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.addObserver(this);
-    print("Stop");
     super.dispose();
   }
 
@@ -74,11 +78,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       title: 'K-On-Net',
       theme: lightTheme(context),
       darkTheme: darkTheme(context),
-      // home: SharedPreferencesHelper.isLoggedIn()
-      //     ? ChatRoomMain()
-      //     : WelcomeScreen(),
       home: widget.isLoggedIn ? ChatRoomMain() : WelcomeScreen(),
-      // home: ChatRoomMain(),
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ChatRoomMain.id: (context) => ChatRoomMain(),
@@ -90,6 +90,5 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 }
 
-//scroll
 // ticks
 // login error

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:k_on_net/components/profileImage.dart';
 import 'package:k_on_net/Screens/messaging/messageScreen.dart';
-import 'package:k_on_net/constants.dart';
 import 'package:k_on_net/services/Firestore.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
 
@@ -25,32 +24,43 @@ class ChatCard extends StatelessWidget {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => MessageScreen(doc)));
             },
+            // child: Padding(
+            //   padding: EdgeInsets.symmetric(
+            //       horizontal: size.width * (0.045 - 0.008),
+            //       vertical: size.width * 0.045),
+            //   child: FutureBuilder(
+            //     future: path.get(),
+            //     builder:
+            //         (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            //       if (snapshot.hasData)
+            //         return CardRow(
+            //             name: doc['name'],
+            //             lastMessage: snapshot.data['message'],
+            //             isOnline: doc['isOnline'],
+            //             senderMe:
+            //                 SharedPrefHelper.myUid() == snapshot.data['sender'],
+            //             messageTime:
+            //                 timeInHourMinFormat(snapshot.data['time']));
+            //       else
+            //         return CardRow(
+            //             name: '',
+            //             lastMessage: '',
+            //             isOnline: false,
+            //             senderMe: false,
+            //             messageTime: '');
+            //     },
+            //   ),
+            // ),
             child: Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: size.width * (0.045 - 0.008),
                   vertical: size.width * 0.045),
-              child: FutureBuilder(
-                future: path.get(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                  if (snapshot.hasData)
-                    return CardRow(
-                        name: doc['name'],
-                        lastMessage: snapshot.data['message'],
-                        isOnline: doc['isOnline'],
-                        senderMe:
-                            SharedPrefHelper.myUid() == snapshot.data['sender'],
-                        messageTime:
-                            timeInHourMinFormat(snapshot.data['time']));
-                  else
-                    return CardRow(
-                        name: '',
-                        lastMessage: '',
-                        isOnline: false,
-                        senderMe: false,
-                        messageTime: '');
-                },
-              ),
+              child: CardRow(
+                  name: doc['name'],
+                  lastMessage: '',
+                  isOnline: doc['isOnline'],
+                  senderMe: doc['id'] == SharedPrefHelper.myUid(),
+                  messageTime: ''),
             ),
           )
         : null;

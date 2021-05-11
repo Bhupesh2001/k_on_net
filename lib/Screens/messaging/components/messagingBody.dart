@@ -15,10 +15,6 @@ class MessagingBody extends StatefulWidget {
 }
 
 class _MessagingBodyState extends State<MessagingBody> {
-  String userID;
-
-  TextEditingController textEditingController = TextEditingController();
-
   ScrollController scrollController = ScrollController();
 
   @override
@@ -30,7 +26,7 @@ class _MessagingBodyState extends State<MessagingBody> {
             .collection('Messages')
             .doc(groupChatId)
             .collection(groupChatId)
-            .orderBy('sendTime', descending: false)
+            .orderBy('sendTime', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
@@ -42,7 +38,7 @@ class _MessagingBodyState extends State<MessagingBody> {
                     itemBuilder: (listContext, index) =>
                         Message(snapshot.data.docs[index]),
                     itemCount: snapshot.data.docs.length,
-                    // reverse: true,
+                    reverse: true,
                   ),
                 ),
                 ChatInputField(

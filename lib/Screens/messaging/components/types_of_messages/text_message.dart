@@ -15,6 +15,7 @@ class TextMessage extends StatelessWidget {
       constraints: BoxConstraints(
         minWidth: 5,
         maxWidth: MediaQuery.of(context).size.width * 0.65,
+        maxHeight: MediaQuery.of(context).size.width * 0.8,
       ),
       padding: EdgeInsets.symmetric(horizontal: 20 * 0.75, vertical: 10),
       decoration: BoxDecoration(

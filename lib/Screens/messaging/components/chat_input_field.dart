@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
 import '../../../constants.dart';
 
-class ChatInputField extends StatelessWidget {
+class ChatInputField extends StatefulWidget {
   final doc;
   final String groupChatId;
 
   const ChatInputField(this.doc, this.groupChatId);
 
+  @override
+  _ChatInputFieldState createState() => _ChatInputFieldState();
+}
+
+class _ChatInputFieldState extends State<ChatInputField> {
   sendText(String msg) async {
     FirebaseFirestore.instance
         .collection("Users")
@@ -17,12 +22,12 @@ class ChatInputField extends StatelessWidget {
 
     CollectionReference users = FirebaseFirestore.instance
         .collection('Messages')
-        .doc(groupChatId)
-        .collection(groupChatId);
+        .doc(widget.groupChatId)
+        .collection(widget.groupChatId);
 
     DocumentReference messageId = await users.add({
       "senderId": SharedPrefHelper.myUid(),
-      "anotherUserId": doc['id'],
+      "anotherUserId": widget.doc['id'],
       "sendTime": DateTime.now(),
       'content': msg,
       "type": 'text',
@@ -37,6 +42,8 @@ class ChatInputField extends StatelessWidget {
     });
   }
 
+  TextEditingController tecMessage = new TextEditingController();
+
   void typing(String value) async {
     DocumentReference myPath = FirebaseFirestore.instance
         .collection("Users")
@@ -49,7 +56,6 @@ class ChatInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController tecMessage = new TextEditingController();
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       decoration: BoxDecoration(boxShadow: [
@@ -81,9 +87,11 @@ class ChatInputField extends StatelessWidget {
                     SizedBox(width: 8),
                     Expanded(
                       child: TextField(
-                        onChanged:
-                            typing, // Its is called when an alphabet is added or removed from TextField
+                        onChanged: typing,
                         controller: tecMessage,
+                        minLines: 1,
+                        maxLines: 4,
+                        keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
                           hintText: "Type message",
                           border: InputBorder.none,

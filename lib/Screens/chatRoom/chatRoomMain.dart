@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:k_on_net/Screens/chatRoom/chatScreen.dart';
-import 'package:k_on_net/Screens/chatRoom/components/searchData.dart';
 import 'package:k_on_net/constants.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
 import 'components/popupMenu.dart';
@@ -43,16 +42,16 @@ class _ChatRoomMainState extends State<ChatRoomMain> {
         actions: [PopupMenu()],
       ),
       body: ChatScreen(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showSearch(context: context, delegate: SearchData());
-        },
-        backgroundColor: kSecondaryColor,
-        child: Icon(
-          Icons.search,
-          color: kPrimaryColor,
-        ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     showSearch(context: context, delegate: SearchData());
+      //   },
+      //   backgroundColor: kSecondaryColor,
+      //   child: Icon(
+      //     Icons.search,
+      //     color: kPrimaryColor,
+      //   ),
+      // ),
       bottomNavigationBar: Container(
         height: MediaQuery.of(context).size.height * 0.08,
         decoration: BoxDecoration(color: Colors.white, boxShadow: [

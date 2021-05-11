@@ -20,7 +20,9 @@ class Message extends StatelessWidget {
       doc['MessageId'].update({'received': true});
     }
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
+      padding: isSender()
+          ? EdgeInsets.only(top: 10, right: 10)
+          : EdgeInsets.only(top: 10, left: 3),
       child: Column(
         crossAxisAlignment:
             isSender() ? CrossAxisAlignment.end : CrossAxisAlignment.start,
@@ -30,7 +32,7 @@ class Message extends StatelessWidget {
                 isSender() ? MainAxisAlignment.end : MainAxisAlignment.start,
             children: [
               SizedBox(width: 10),
-              if (!isSender()) ProfileImage(edgeLength: 23),
+              if (!isSender()) ProfileImage(edgeLength: 25),
               SizedBox(width: 10),
               messageContent(doc),
               if (isSender()) MessageStatusDot(doc: doc),

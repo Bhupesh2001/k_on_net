@@ -35,7 +35,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               verificationId: _verificationCode, smsCode: pin))
           .then((value) async {
         if (value.user != null) {
-          SharedPrefHelper.loginSuccessful();
           SharedPrefHelper.setCurrentLoginData(
               tecPhone.text, auth.currentUser.uid);
           Navigator.pushAndRemoveUntil(
@@ -92,6 +91,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
           });
         },
         timeout: Duration(seconds: 90));
+  }
+
+  @override
+  void dispose() {
+    dispose();
+    tecPhone.dispose();
+    tecOtp.dispose();
+    super.dispose();
   }
 
   @override

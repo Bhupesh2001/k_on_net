@@ -12,31 +12,14 @@ class SharedPrefHelper {
     return false;
   }
 
-  static bool isDetailsFilled() {
-    if (spObject.getBool('detailsFilled') != null)
-      return spObject.getBool('detailsFilled');
-    return false;
+  static void setCurrentLoginData(String phone, String uid) {
+    spObject.setString('currentUserPhone', phone);
+    spObject.setString('myUid', uid);
   }
 
-  static loginSuccessful() async => await spObject.setBool('isLoggedIn', true);
-
-  static void setCurrentLoginData(String phone, String uid) async {
-    await spObject.setString('currentUserPhone', phone);
-    await spObject.setString('myUid', uid);
-    print("isLogin = " + spObject.getBool('isLoggedIn').toString());
-    print("currentUserPhone = " +
-        spObject.getBool('currentUserPhone').toString());
-    print("myUid = " + spObject.getBool('myUid').toString());
-  }
-
-  static void setCurrentProfileData(String name, String team) async {
-    await spObject.setString('currentUserName', name);
-    await spObject.setString('currentUserTeam', team);
-  }
-
-  static void signOut() async {
-    await spObject.setBool('isLoggedIn', false);
-    await spObject.setBool('detailsFilled', false);
+  static void setCurrentProfileData(String name, String team) {
+    spObject.setString('currentUserName', name);
+    spObject.setString('currentUserTeam', team);
   }
 
   static String myUid() => spObject.getString('myUid');
