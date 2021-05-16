@@ -95,7 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
-    dispose();
+    // dispose();
     tecPhone.dispose();
     tecOtp.dispose();
     super.dispose();

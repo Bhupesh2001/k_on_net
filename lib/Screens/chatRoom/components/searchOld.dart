@@ -5,7 +5,7 @@ import 'package:k_on_net/Screens/messaging/messageScreen.dart';
 import 'package:k_on_net/constants.dart';
 import 'package:k_on_net/model/Chat.dart';
 
-class SearchData extends SearchDelegate<String> {
+class SearchOld extends SearchDelegate<String> {
   @override
   List<Widget> buildActions(BuildContext context) {
     return [

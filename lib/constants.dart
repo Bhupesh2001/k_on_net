@@ -31,7 +31,7 @@ List<Widget> widgetOptions = <Widget>[
 flutterToast(String message) => Fluttertoast.showToast(
     msg: message,
     toastLength: Toast.LENGTH_SHORT,
-    gravity: ToastGravity.BOTTOM,
+    // gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,
     backgroundColor: kSecondaryColor,
     textColor: Colors.white,

@@ -4,6 +4,7 @@ import 'package:k_on_net/Screens/Welcome/background.dart';
 import 'package:k_on_net/Screens/signUp/register_screen.dart';
 import 'package:k_on_net/components/rounded_button.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:k_on_net/utility/contacts.dart';
 import '../../constants.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -79,5 +80,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    ContactUtils.getContactPermission();
+    super.initState();
   }
 }

@@ -1,21 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
-  final String userId;
-  final String userName;
-  final bool isOnline;
-  final Timestamp lastMessageTime;
-  final Timestamp lastOnline;
-  final String teamName;
-  final String profilePic;
-
-  User(
-    this.userId,
-    this.isOnline,
-    this.lastMessageTime,
-    this.lastOnline,
-    this.userName,
-    this.profilePic,
-    this.teamName,
-  );
+class MyUser {
+  String id;
+  bool isOnline;
+  String lastOnlineTime;
+  String name;
+  String phone;
+  String teamName;
+  MyUser(DocumentSnapshot doc) {
+    id = doc['id'];
+    isOnline = doc['isOnline'];
+    lastOnlineTime = doc['lastOnline'];
+    name = doc['name'];
+    phone = doc['phone'];
+    teamName = doc['teamName'];
+  }
 }

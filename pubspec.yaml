@@ -39,6 +39,8 @@ dependencies:
   shared_preferences: ^2.0.5
   firebase_core: ^1.0.3
   pinput: ^1.2.0
+  permission_handler: ^7.1.0
+  contacts_service: ^0.6.1
 
 dev_dependencies:
   flutter_test:

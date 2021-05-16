@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:k_on_net/components/profileImage.dart';
 import 'package:k_on_net/Screens/messaging/messageScreen.dart';
+import 'package:k_on_net/constants.dart';
 import 'package:k_on_net/services/Firestore.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
 
@@ -11,12 +12,6 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DocumentReference path = FirebaseFirestore.instance
-        .collection("Messages")
-        .doc(FireStoreHelper.getGroupChatId(doc))
-        .collection(FireStoreHelper.getGroupChatId(doc))
-        .doc("lastMessages");
-
     Size size = MediaQuery.of(context).size;
     return SharedPrefHelper.myUid() != doc['id']
         ? InkWell(
@@ -24,43 +19,17 @@ class ChatCard extends StatelessWidget {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => MessageScreen(doc)));
             },
-            // child: Padding(
-            //   padding: EdgeInsets.symmetric(
-            //       horizontal: size.width * (0.045 - 0.008),
-            //       vertical: size.width * 0.045),
-            //   child: FutureBuilder(
-            //     future: path.get(),
-            //     builder:
-            //         (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            //       if (snapshot.hasData)
-            //         return CardRow(
-            //             name: doc['name'],
-            //             lastMessage: snapshot.data['message'],
-            //             isOnline: doc['isOnline'],
-            //             senderMe:
-            //                 SharedPrefHelper.myUid() == snapshot.data['sender'],
-            //             messageTime:
-            //                 timeInHourMinFormat(snapshot.data['time']));
-            //       else
-            //         return CardRow(
-            //             name: '',
-            //             lastMessage: '',
-            //             isOnline: false,
-            //             senderMe: false,
-            //             messageTime: '');
-            //     },
-            //   ),
-            // ),
             child: Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: size.width * (0.045 - 0.008),
                   vertical: size.width * 0.045),
               child: CardRow(
-                  name: doc['name'],
-                  lastMessage: '',
-                  isOnline: doc['isOnline'],
-                  senderMe: doc['id'] == SharedPrefHelper.myUid(),
-                  messageTime: ''),
+                name: doc['name'],
+                isOnline: doc['isOnline'],
+                senderMe: doc['id'] == SharedPrefHelper.myUid(),
+                messageTime: '',
+                doc: doc,
+              ),
             ),
           )
         : null;
@@ -71,17 +40,17 @@ class CardRow extends StatelessWidget {
   const CardRow({
     Key key,
     @required this.name,
-    @required this.lastMessage,
     @required this.isOnline,
     @required this.senderMe,
     @required this.messageTime,
+    @required this.doc,
   }) : super(key: key);
 
   final String name;
-  final String lastMessage;
   final bool isOnline; //doc['isOnline']
   final bool senderMe;
   final String messageTime;
+  final DocumentSnapshot doc;
 
   @override
   Widget build(BuildContext context) {
@@ -126,21 +95,42 @@ class CardRow extends StatelessWidget {
                 SizedBox(height: size.width * 0.012),
                 Opacity(
                   opacity: 0.64,
-                  child: Text(
-                    lastMessage,
-                    style: TextStyle(fontSize: 15),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  child: FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection("Messages")
+                        .doc(FireStoreHelper.getGroupChatId(doc))
+                        .collection(FireStoreHelper.getGroupChatId(doc))
+                        .doc('lastMessages')
+                        .get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      print(snapshot.data);
+                      if (snapshot.hasData && snapshot.data != null)
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              (snapshot.data)['message'],
+                              style: TextStyle(fontSize: 15),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Opacity(
+                              opacity: 0.64,
+                              child: Text(
+                                  timeInHourMinFormat((snapshot.data)['time'])),
+                            )
+                          ],
+                        );
+                      else
+                        return Text('');
+                    },
                   ),
                 ),
               ],
             ),
           ),
         ),
-        Opacity(
-          opacity: 0.64,
-          child: Text(messageTime),
-        )
       ],
     );
   }
