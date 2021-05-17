@@ -18,7 +18,7 @@ class _ChatScreenState extends State<ChatScreen> {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection("Users")
-            .where("id", isNotEqualTo: userId)
+            .where("friends", arrayContains: SharedPrefHelper.myUid())
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data != null) {

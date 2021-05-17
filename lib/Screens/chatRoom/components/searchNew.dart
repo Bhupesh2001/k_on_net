@@ -5,6 +5,7 @@ import 'package:k_on_net/components/profileImage.dart';
 import 'package:k_on_net/Screens/messaging/messageScreen.dart';
 import 'package:k_on_net/constants.dart';
 import 'package:k_on_net/services/Firestore.dart';
+import 'package:k_on_net/utility/shared_Preferences.dart';
 
 class SearchNew extends SearchDelegate<String> {
   final List<String> number;
@@ -64,38 +65,47 @@ class SearchNew extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return StreamBuilder(
+    return ListView.builder(
+      itemCount: number.length,
+      itemBuilder: (context, index) => StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection("Users")
-            .where('phone', whereIn: number)
+            .where('phone', isEqualTo: number[index])
             .snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null)
-            return ListView.builder(
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (context, index) => ListTile(
-                leading: ProfileImage(edgeLength: 35),
-                onTap: () {
-                  close(context, null);
-                  //TODO Anmol yaha kam kar
-                  FireStoreHelper.createRoom(snapshot.data.docs[index]);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            MessageScreen(snapshot.data.docs[index])),
-                  );
-                },
-                title: Text(names[
-                    number.indexOf((snapshot.data.docs[index])['phone'])]),
-                subtitle: Text((snapshot.data.docs[index])['phone']),
-              ),
+          if (snapshot.hasData && snapshot.data.size == 1) {
+            return ListTile(
+              leading: ProfileImage(edgeLength: 35),
+              onTap: () {
+                close(context, null);
+                FireStoreHelper.createRoom(snapshot.data.docs[0]);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          MessageScreen(snapshot.data.docs[0])),
+                );
+                FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc((snapshot.data.docs[0])['id'])
+                    .update({
+                  'friends': FieldValue.arrayUnion([SharedPrefHelper.myUid()])
+                });
+                FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(SharedPrefHelper.myUid())
+                    .update({
+                  'friends':
+                      FieldValue.arrayUnion((snapshot.data.docs[0])['id'])
+                });
+              },
+              title: Text(names[index]),
+              subtitle: Text(number[index]),
             );
-          else
-            return Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                color: kSecondaryColor);
-        });
+          } else
+            return Container(width: 0.0, height: 0.0);
+        },
+      ),
+    );
   }
 }

@@ -104,7 +104,6 @@ class CardRow extends StatelessWidget {
                         .get(),
                     builder: (BuildContext context,
                         AsyncSnapshot<dynamic> snapshot) {
-                      print(snapshot.data);
                       if (snapshot.hasData && snapshot.data != null)
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,6 +130,20 @@ class CardRow extends StatelessWidget {
             ),
           ),
         ),
+        StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection("Messages")
+                .doc(FireStoreHelper.getGroupChatId(doc))
+                .collection(FireStoreHelper.getGroupChatId(doc))
+                .where('senderId', isNotEqualTo: SharedPrefHelper.myUid())
+                .where('received', isEqualTo: false)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data.size != 0)
+                return Text(snapshot.data.size.toString());
+              else
+                return Container(height: 0, width: 0);
+            }),
       ],
     );
   }

@@ -60,8 +60,9 @@ class _PopupMenuState extends State<PopupMenu> {
                       .replaceAll("(", "")
                       .replaceAll("-", ""));
                   names.add(contactsList[i].displayName);
-                  print(numbers[i]);
                 }
+                ContactUtils.phoneNum = numbers;
+                ContactUtils.phoneNames = names;
                 showSearch(
                     context: context, delegate: SearchNew(numbers, names));
               } else {
