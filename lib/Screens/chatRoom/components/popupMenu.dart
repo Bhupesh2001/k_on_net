@@ -65,8 +65,6 @@ class _PopupMenuState extends State<PopupMenu> {
                 ContactUtils.phoneNames = names;
                 showSearch(
                     context: context, delegate: SearchNew(numbers, names));
-              } else {
-                flutterToast("Allow contacts from settings");
               }
             },
           ),

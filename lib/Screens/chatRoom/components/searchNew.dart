@@ -78,7 +78,9 @@ class SearchNew extends SearchDelegate<String> {
               leading: ProfileImage(edgeLength: 35),
               onTap: () {
                 close(context, null);
-                FireStoreHelper.createRoom(snapshot.data.docs[0]);
+                print((snapshot.data.docs[0])['id']);
+                print(SharedPrefHelper.myUid());
+                // FireStoreHelper.createRoom(snapshot.data.docs[0]);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -87,16 +89,27 @@ class SearchNew extends SearchDelegate<String> {
                 );
                 FirebaseFirestore.instance
                     .collection("Users")
+                    .doc(SharedPrefHelper.myUid())
+                    .update({
+                  'friends':
+                      FieldValue.arrayUnion([(snapshot.data.docs[0])['id']])
+                });
+                FirebaseFirestore.instance
+                    .collection("Users")
                     .doc((snapshot.data.docs[0])['id'])
                     .update({
                   'friends': FieldValue.arrayUnion([SharedPrefHelper.myUid()])
                 });
                 FirebaseFirestore.instance
-                    .collection("Users")
-                    .doc(SharedPrefHelper.myUid())
-                    .update({
-                  'friends':
-                      FieldValue.arrayUnion((snapshot.data.docs[0])['id'])
+                    .collection('Messages')
+                    .doc(FireStoreHelper.getGroupChatId(snapshot.data.docs[0]))
+                    .collection(
+                        FireStoreHelper.getGroupChatId(snapshot.data.docs[0]))
+                    .doc('lastMessages')
+                    .set({
+                  'message': null,
+                  'time': null,
+                  'sender': SharedPrefHelper.myUid()
                 });
               },
               title: Text(names[index]),

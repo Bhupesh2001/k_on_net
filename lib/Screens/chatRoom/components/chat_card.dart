@@ -104,21 +104,23 @@ class CardRow extends StatelessWidget {
                         .get(),
                     builder: (BuildContext context,
                         AsyncSnapshot<dynamic> snapshot) {
+                      print(snapshot.data);
                       if (snapshot.hasData && snapshot.data != null)
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              (snapshot.data)['message'],
+                              (snapshot.data)['message'] ?? '',
                               style: TextStyle(fontSize: 15),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            Opacity(
-                              opacity: 0.64,
-                              child: Text(
-                                  timeInHourMinFormat((snapshot.data)['time'])),
-                            )
+                            if ((snapshot.data)['time'] != null)
+                              Opacity(
+                                opacity: 0.64,
+                                child: Text(timeInHourMinFormat(
+                                    (snapshot.data)['time'])),
+                              )
                           ],
                         );
                       else
@@ -130,20 +132,6 @@ class CardRow extends StatelessWidget {
             ),
           ),
         ),
-        StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection("Messages")
-                .doc(FireStoreHelper.getGroupChatId(doc))
-                .collection(FireStoreHelper.getGroupChatId(doc))
-                .where('senderId', isNotEqualTo: SharedPrefHelper.myUid())
-                .where('received', isEqualTo: false)
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data.size != 0)
-                return Text(snapshot.data.size.toString());
-              else
-                return Container(height: 0, width: 0);
-            }),
       ],
     );
   }

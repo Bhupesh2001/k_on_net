@@ -23,10 +23,15 @@ class _ChatScreenState extends State<ChatScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
             return ListView.builder(
-              itemBuilder: (listContext, index) =>
-                  ChatCard(snapshot.data.docs[index]),
-              itemCount: snapshot.data.docs.length,
-            );
+                itemCount: snapshot.data.docs.length,
+                itemBuilder: (listContext, index) {
+                  if (snapshot.data.docs.length > 0)
+                    return ChatCard(snapshot.data.docs[index]);
+                  else
+                    return Expanded(
+                        child:
+                            Text("Seems you have not added any Konnections"));
+                });
           } else
             return LoadingIndicator(isLoading: true);
         },
