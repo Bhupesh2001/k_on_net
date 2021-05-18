@@ -1,17 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
 import 'package:k_on_net/components/profileImage.dart';
 import 'package:k_on_net/Screens/messaging/messageScreen.dart';
 import 'package:k_on_net/constants.dart';
 import 'package:k_on_net/services/Firestore.dart';
+import 'package:k_on_net/utility/contacts.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
 
 class SearchNew extends SearchDelegate<String> {
-  final List<String> number;
-  final List<String> names;
+  void getNumbers() async {
+    ContactUtils.gettingContacts = true;
+    List<String> contactNumbers = [];
+    List<String> contactNames = [];
+    Iterable<Contact> _contacts =
+        await ContactsService.getContacts(withThumbnails: false);
 
-  SearchNew(this.number, this.names);
+    _contacts.forEach((contact) {
+      contact.phones.toSet().forEach((phone) {
+        contactNames.add(contact.displayName ?? contact.givenName);
+        contactNumbers.add(phone.value
+            .replaceFirst('+91', '')
+            .replaceAll(' ', '')
+            .replaceAll('(', '')
+            .replaceAll(')', '')
+            .replaceAll('-', ''));
+      });
+    });
+
+    ContactUtils.phoneNum = contactNumbers.toSet().toList();
+    for (int i = 0; i < ContactUtils.phoneNum.length; i++)
+      print(ContactUtils.phoneNum[i] + "\n");
+
+    ContactUtils.phoneNames = contactNames.toSet().toList();
+    ContactUtils.gettingContacts = false;
+  }
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -65,12 +90,13 @@ class SearchNew extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    getNumbers();
     return ListView.builder(
-      itemCount: number.length,
+      itemCount: ContactUtils.phoneNum.length,
       itemBuilder: (context, index) => StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection("Users")
-            .where('phone', isEqualTo: number[index])
+            .where('phone', isEqualTo: ContactUtils.phoneNum[index])
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data.size == 1) {
@@ -78,8 +104,6 @@ class SearchNew extends SearchDelegate<String> {
               leading: ProfileImage(edgeLength: 35),
               onTap: () {
                 close(context, null);
-                print((snapshot.data.docs[0])['id']);
-                print(SharedPrefHelper.myUid());
                 // FireStoreHelper.createRoom(snapshot.data.docs[0]);
                 Navigator.push(
                   context,
@@ -112,8 +136,11 @@ class SearchNew extends SearchDelegate<String> {
                   'sender': SharedPrefHelper.myUid()
                 });
               },
-              title: Text(names[index]),
-              subtitle: Text(number[index]),
+              title: Text((snapshot.data.docs[0])['name']),
+              subtitle: Text(
+                ContactUtils.phoneNum[index],
+                style: TextStyle(color: Colors.white),
+              ),
             );
           } else
             return Container(width: 0.0, height: 0.0);

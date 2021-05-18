@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:k_on_net/components/profileImage.dart';
 import 'package:k_on_net/Screens/messaging/messageScreen.dart';
-import 'package:k_on_net/constants.dart';
-import 'package:k_on_net/services/Firestore.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
 
 class ChatCard extends StatelessWidget {
@@ -93,41 +91,40 @@ class CardRow extends StatelessWidget {
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(height: size.width * 0.012),
-                Opacity(
-                  opacity: 0.64,
-                  child: FutureBuilder(
-                    future: FirebaseFirestore.instance
-                        .collection("Messages")
-                        .doc(FireStoreHelper.getGroupChatId(doc))
-                        .collection(FireStoreHelper.getGroupChatId(doc))
-                        .doc('lastMessages')
-                        .get(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<dynamic> snapshot) {
-                      print(snapshot.data);
-                      if (snapshot.hasData && snapshot.data != null)
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              (snapshot.data)['message'] ?? '',
-                              style: TextStyle(fontSize: 15),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            if ((snapshot.data)['time'] != null)
-                              Opacity(
-                                opacity: 0.64,
-                                child: Text(timeInHourMinFormat(
-                                    (snapshot.data)['time'])),
-                              )
-                          ],
-                        );
-                      else
-                        return Text('');
-                    },
-                  ),
-                ),
+                // Opacity(
+                //   opacity: 0.64,
+                //   child: FutureBuilder(
+                //     future: FirebaseFirestore.instance
+                //         .collection("Messages")
+                //         .doc(FireStoreHelper.getGroupChatId(doc))
+                //         .collection(FireStoreHelper.getGroupChatId(doc))
+                //         .doc('lastMessages')
+                //         .get(),
+                //     builder: (BuildContext context,
+                //         AsyncSnapshot<dynamic> snapshot) {
+                //       if (snapshot.hasData && snapshot.data != null)
+                //         return Row(
+                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //           children: [
+                //             Text(
+                //               (snapshot.data)['message'] ?? '',
+                //               style: TextStyle(fontSize: 15),
+                //               maxLines: 1,
+                //               overflow: TextOverflow.ellipsis,
+                //             ),
+                //             if ((snapshot.data)['time'] != null)
+                //               Opacity(
+                //                 opacity: 0.64,
+                //                 child: Text(timeInHourMinFormat(
+                //                     (snapshot.data)['time'])),
+                //               )
+                //           ],
+                //         );
+                //       else
+                //         return Text('');
+                //     },
+                //   ),
+                // ),
               ],
             ),
           ),
