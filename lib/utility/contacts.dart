@@ -4,7 +4,6 @@ import '../constants.dart';
 class ContactUtils {
   static List<String> phoneNum = [];
   static List<String> phoneNames = [];
-  static bool gettingContacts = false;
   static Future getContactPermission() async {
     final PermissionStatus permission = await Permission.contacts.status;
     if (permission.isDenied) {

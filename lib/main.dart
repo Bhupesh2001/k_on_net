@@ -10,6 +10,7 @@ import 'package:k_on_net/Screens/chatRoom/chatRoomMain.dart';
 import 'package:k_on_net/Screens/messaging/messageScreen.dart';
 import 'package:k_on_net/Screens/signUp/register_screen.dart';
 import 'package:k_on_net/Screens/signUp/userDetailScreen.dart';
+import 'package:k_on_net/TESTING.dart';
 import 'package:k_on_net/themeData.dart';
 import 'package:k_on_net/utility/shared_Preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -79,6 +80,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       theme: lightTheme(context),
       darkTheme: darkTheme(context),
       home: widget.isLoggedIn ? ChatRoomMain() : WelcomeScreen(),
+      // home: TestingPage(),
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ChatRoomMain.id: (context) => ChatRoomMain(),

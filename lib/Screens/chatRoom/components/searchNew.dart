@@ -11,7 +11,6 @@ import 'package:k_on_net/utility/shared_Preferences.dart';
 
 class SearchNew extends SearchDelegate<String> {
   void getNumbers() async {
-    ContactUtils.gettingContacts = true;
     List<String> contactNumbers = [];
     List<String> contactNames = [];
     Iterable<Contact> _contacts =
@@ -22,19 +21,14 @@ class SearchNew extends SearchDelegate<String> {
         contactNames.add(contact.displayName ?? contact.givenName);
         contactNumbers.add(phone.value
             .replaceFirst('+91', '')
-            .replaceAll(' ', '')
-            .replaceAll('(', '')
-            .replaceAll(')', '')
-            .replaceAll('-', ''));
+            .replaceFirst(' ', '')
+            .replaceFirst('(', '')
+            .replaceFirst(')', '')
+            .replaceFirst('-', ''));
       });
     });
-
     ContactUtils.phoneNum = contactNumbers.toSet().toList();
-    for (int i = 0; i < ContactUtils.phoneNum.length; i++)
-      print(ContactUtils.phoneNum[i] + "\n");
-
     ContactUtils.phoneNames = contactNames.toSet().toList();
-    ContactUtils.gettingContacts = false;
   }
 
   @override
@@ -91,61 +85,66 @@ class SearchNew extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     getNumbers();
-    return ListView.builder(
-      itemCount: ContactUtils.phoneNum.length,
-      itemBuilder: (context, index) => StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection("Users")
-            .where('phone', isEqualTo: ContactUtils.phoneNum[index])
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data.size == 1) {
-            return ListTile(
-              leading: ProfileImage(edgeLength: 35),
-              onTap: () {
-                close(context, null);
-                // FireStoreHelper.createRoom(snapshot.data.docs[0]);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          MessageScreen(snapshot.data.docs[0])),
-                );
-                FirebaseFirestore.instance
-                    .collection("Users")
-                    .doc(SharedPrefHelper.myUid())
-                    .update({
-                  'friends':
-                      FieldValue.arrayUnion([(snapshot.data.docs[0])['id']])
-                });
-                FirebaseFirestore.instance
-                    .collection("Users")
-                    .doc((snapshot.data.docs[0])['id'])
-                    .update({
-                  'friends': FieldValue.arrayUnion([SharedPrefHelper.myUid()])
-                });
-                FirebaseFirestore.instance
-                    .collection('Messages')
-                    .doc(FireStoreHelper.getGroupChatId(snapshot.data.docs[0]))
-                    .collection(
-                        FireStoreHelper.getGroupChatId(snapshot.data.docs[0]))
-                    .doc('lastMessages')
-                    .set({
-                  'message': null,
-                  'time': null,
-                  'sender': SharedPrefHelper.myUid()
-                });
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          for (int i = 0; i < ContactUtils.phoneNum.length; i++)
+            FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection("Users")
+                  .where('phone', isEqualTo: ContactUtils.phoneNum[i])
+                  .get(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data.size > 0) {
+                  return ListTile(
+                    leading: ProfileImage(edgeLength: 35),
+                    onTap: () {
+                      close(context, null);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                MessageScreen(snapshot.data.docs[0])),
+                      );
+                      onTap(snapshot);
+                    },
+                    title: Text((snapshot.data.docs[0])['name']),
+                    subtitle: Text(
+                      ContactUtils.phoneNum[i],
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                } else
+                  return SizedBox.shrink();
               },
-              title: Text((snapshot.data.docs[0])['name']),
-              subtitle: Text(
-                ContactUtils.phoneNum[index],
-                style: TextStyle(color: Colors.white),
-              ),
-            );
-          } else
-            return Container(width: 0.0, height: 0.0);
-        },
+            ),
+        ],
       ),
     );
+  }
+
+  onTap(AsyncSnapshot<QuerySnapshot<Object>> snapshot) {
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(SharedPrefHelper.myUid())
+        .update({
+      'friends': FieldValue.arrayUnion([(snapshot.data.docs[0])['id']])
+    });
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc((snapshot.data.docs[0])['id'])
+        .update({
+      'friends': FieldValue.arrayUnion([SharedPrefHelper.myUid()])
+    });
+    FirebaseFirestore.instance
+        .collection('Messages')
+        .doc(FireStoreHelper.getGroupChatId(snapshot.data.docs[0]))
+        .collection(FireStoreHelper.getGroupChatId(snapshot.data.docs[0]))
+        .doc('lastMessages')
+        .set({
+      'message': null,
+      'time': null,
+      'sender': SharedPrefHelper.myUid()
+    });
   }
 }

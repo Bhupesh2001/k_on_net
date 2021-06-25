@@ -30,7 +30,7 @@ class ChatCard extends StatelessWidget {
               ),
             ),
           )
-        : null;
+        : SizedBox.shrink();
   }
 }
 
